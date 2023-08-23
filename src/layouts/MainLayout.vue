@@ -30,10 +30,6 @@ import { ref } from 'vue'
 import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue'
 import { useLogoutUser } from 'src/modules/auth/composables/login.composable'
 import { useRouter } from 'vue-router'
-// import { useRouter } from 'vue-router'
-// import { LocalStorage } from 'quasar'
-// import { api } from 'src/api'
-// import { useAuthStore } from 'src/stores/auth-store'
 
 const router = useRouter()
 
