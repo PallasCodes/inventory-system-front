@@ -1,7 +1,6 @@
 import { Loading, LocalStorage } from 'quasar'
 import { api } from 'src/api'
 import { useAuthStore } from 'src/stores/auth-store'
-import { useRouter } from 'vue-router'
 
 // const router = useRouter()
 

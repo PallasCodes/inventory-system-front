@@ -6,7 +6,7 @@ import {
   createWebHistory,
 } from 'vue-router'
 
-import routes from './routes'
+import routes from './mainRoutes'
 
 import { useAuthStore } from 'src/stores/auth-store'
 
@@ -37,6 +37,8 @@ export default route(function (/* { store, ssrContext } */) {
 
     if (!to.meta.noAuth && !isLoggedIn) {
       next('/login')
+    } else if (to.meta.noAuth && isLoggedIn) {
+      next('')
     } else {
       next()
     }
