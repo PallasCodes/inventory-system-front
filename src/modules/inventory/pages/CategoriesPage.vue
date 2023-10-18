@@ -5,6 +5,7 @@ import { CategoryService } from 'src/api/category.api'
 
 import CategoriesList from '../components/CategoriesList.vue'
 import { Category } from '../interfaces/Category'
+import { handleRequest } from 'src/utils/handleRequest'
 
 const orderBy = ref<string>('Descendente')
 const orderOptions = ref<string[]>(['Ascendente', 'Descendente'])
@@ -15,9 +16,14 @@ const categories = ref<Category[]>()
 const allCategories = ref<Category[]>()
 
 onMounted(async () => {
-  const { data } = await CategoryService.findAll()
-  allCategories.value = data
-  categories.value = data
+  const { data, error, message } = await handleRequest(CategoryService.findAll)
+
+  if (error) {
+    message?.display()
+  } else {
+    allCategories.value = data as Category[]
+    categories.value = data as Category[]
+  }
 })
 
 watch(

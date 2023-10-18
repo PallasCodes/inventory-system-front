@@ -1,11 +1,13 @@
 import { reactive } from 'vue'
 
 export interface SingleItem {
-  state: string
+  singleItemStatus: { idSingleItemStatus: number; name: string }
   comments?: string
 }
 
-const store = reactive<SingleItem[]>([{ state: 'available', comments: '' }])
+const store = reactive<SingleItem[]>([
+  { singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' }, comments: '' },
+])
 
 const item = reactive({
   name: '',
@@ -19,9 +21,9 @@ function updateStore(singleItemsAmount: number) {
   if (singleItemsAmount > store.length) {
     const newSingleItems = Array.from(
       { length: singleItemsAmount - store.length },
-      (singleItem, i) => {
+      () => {
         return {
-          state: 'available',
+          singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' },
           comments: '',
         }
       },

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Loading, useQuasar } from 'quasar'
 import { CategoryService } from 'src/api/category.api'
+import { handleRequest } from 'src/utils/handleRequest'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -20,8 +21,11 @@ const formData = ref<RegisterCategoryForm>({
 
 const registerCategory = async () => {
   Loading.show()
-  await CategoryService.create(formData.value)
+
+  await handleRequest(CategoryService.create, { ...formData.value })
+
   Loading.hide()
+
   $q.notify({
     color: 'green',
     textColor: 'white',

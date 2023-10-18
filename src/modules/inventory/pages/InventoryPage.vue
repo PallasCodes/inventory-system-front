@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 
 import { ItemService } from 'src/api/item.api'
+import { handleRequest } from 'src/utils/handleRequest'
 
 import ItemsInfoCardsList, { ItemCard } from '../components/ItemsInfoCardsList.vue'
 import ItemsTable, { ItemTable } from '../components/ItemsTable.vue'
@@ -44,14 +45,14 @@ const singleItems = ref<SingleItemTable[]>([])
 const isTableDataLoading = ref<boolean>(true)
 
 onMounted(async () => {
-  const { data } = await ItemService.findAll()
+  const { data } = await handleRequest(ItemService.findAll)
   isTableDataLoading.value = false
-  items.value = data
+  items.value = data as ItemTable[]
 })
 
 const onClickRow = async (idItem: string) => {
   const { data } = await ItemService.findOneById(idItem)
-  singleItems.value = data.singleItems
+  singleItems.value = data.responseData.singleItems
 }
 </script>
 
