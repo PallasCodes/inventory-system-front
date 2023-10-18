@@ -14,14 +14,14 @@ export interface AxiosCustomResponse extends AxiosResponse {
 }
 
 interface HttpResponse {
-  data: object
+  data: any
   error: boolean
   message?: Message
   requestTime: number | string
 }
 
 export async function handleRequest(
-  fn: (args: any) => Promise<AxiosCustomResponse>,
+  fn: (...fnArgs: any) => Promise<AxiosCustomResponse>,
   ...args: any
 ) {
   if (!fn) throw new Error('No function was given')
@@ -35,7 +35,7 @@ export async function handleRequest(
   const startTime = new Date()
 
   try {
-    const response = await fn(args)
+    const response = await fn(...args)
 
     const endTime = new Date()
 

@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import { CategoryService } from 'src/api/category.api'
 import { ItemService } from 'src/api/item.api'
+import { handleRequest } from 'src/utils/handleRequest'
 
 import CategoryDetailTable from '../components/CategoryDetailTable.vue'
 
@@ -26,13 +27,13 @@ onMounted(async () => {
 
   const idCategory = route.params.id as string
 
-  const { data }: { data: CategoryData } = await CategoryService.findOneById(idCategory)
-  categoryData.value = data
+  const { data } = await handleRequest(CategoryService.findOneById, idCategory)
+  categoryData.value = data as CategoryData
   categoryData.value.createdAt = new Date(
     categoryData.value.createdAt,
   ).toLocaleDateString()
 
-  const { data: tableData } = await ItemService.findByCategory(idCategory)
+  const { data: tableData } = await handleRequest(ItemService.findByCategory, idCategory)
   tableIsLoading.value = false
   categories.value = tableData
 })

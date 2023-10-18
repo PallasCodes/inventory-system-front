@@ -51,8 +51,8 @@ onMounted(async () => {
 })
 
 const onClickRow = async (idItem: string) => {
-  const { data } = await ItemService.findOneById(idItem)
-  singleItems.value = data.responseData.singleItems
+  const { data } = await handleRequest(ItemService.findOneById, idItem)
+  singleItems.value = data.singleItems as SingleItemTable[]
 }
 </script>
 

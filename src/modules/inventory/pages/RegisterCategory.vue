@@ -22,7 +22,7 @@ const formData = ref<RegisterCategoryForm>({
 const registerCategory = async () => {
   Loading.show()
 
-  await handleRequest(CategoryService.create, { ...formData.value })
+  await handleRequest(CategoryService.create, formData.value)
 
   Loading.hide()
 

@@ -9,6 +9,7 @@ import { CategoryService } from 'src/api/category.api'
 import { ItemService } from 'src/api/item.api'
 import { ItemCatalogsService } from 'src/api/item-catalogs.api'
 import { notEmpty, notEmptyNumber } from 'src/utils/formValidations'
+import { handleRequest } from 'src/utils/handleRequest'
 
 import SingleItemsList, { SingleItemStatus } from '../components/SingleItemsList.vue'
 
@@ -22,12 +23,13 @@ const categories = ref<Category[]>([])
 const singleItemsStatusesCatalog = ref<SingleItemStatus[]>([])
 
 onMounted(async () => {
-  const { data: categoriesData } = await CategoryService.findAll()
-  categories.value = categoriesData.responseData
+  const { data: categoriesData } = await handleRequest(CategoryService.findAll)
+  categories.value = categoriesData as Category[]
 
-  const { data: singleItemStausesData } =
-    await ItemCatalogsService.getSingleItemStatuses()
-  singleItemsStatusesCatalog.value = singleItemStausesData.responseData
+  const { data: singleItemStausesData } = await handleRequest(
+    ItemCatalogsService.getSingleItemStatuses,
+  )
+  singleItemsStatusesCatalog.value = singleItemStausesData as SingleItemStatus[]
 })
 
 /* ================= FORM ================= */
