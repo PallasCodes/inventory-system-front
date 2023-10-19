@@ -28,7 +28,7 @@
         <span class="text-h6 q-pa-md q-pb-lg block">INVENTARIO IM</span>
       </div>
       <q-list id="drawer">
-        <div class="q-px-md q-pb-xs text-grey-8">
+        <div class="q-px-md q-pb-xs text-grey-5">
           <span class="block font-weight-medium">Inventario</span>
         </div>
         <q-item
@@ -50,7 +50,7 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="category" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Categorías</q-item-label>
@@ -63,7 +63,7 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="add_circle" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar item</q-item-label>
@@ -76,14 +76,14 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="add_box" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar categoría</q-item-label>
           </q-item-section>
         </q-item>
 
-        <div class="q-px-md q-pb-xs q-pt-md text-grey-8">
+        <div class="q-px-md q-pb-xs q-pt-md text-grey-5">
           <span class="block font-weight-medium">Préstamos</span>
         </div>
         <q-item
@@ -92,7 +92,7 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="real_estate_agent" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Préstamos</q-item-label>
@@ -101,7 +101,7 @@
 
         <q-item to="/login" class="nav-item" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="receipt_long" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar préstamo</q-item-label>
@@ -114,14 +114,14 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="receipt" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar entrega</q-item-label>
           </q-item-section>
         </q-item>
 
-        <div class="q-px-md q-pb-xs q-pt-md text-grey-8">
+        <div class="q-px-md q-pb-xs q-pt-md text-grey-5">
           <span class="block font-weight-medium">Empleados</span>
         </div>
         <q-item
@@ -130,7 +130,7 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="people" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Empleados</q-item-label>
@@ -139,7 +139,7 @@
 
         <q-item to="/login" class="nav-item" active-class="q-item-no-link-highlighting">
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="person_add" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar empleado</q-item-label>
@@ -152,7 +152,7 @@
           active-class="q-item-no-link-highlighting"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" />
+            <q-icon name="room_preferences" />
           </q-item-section>
           <q-item-section>
             <q-item-label>Registrar departamento</q-item-label>

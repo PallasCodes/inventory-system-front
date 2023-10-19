@@ -14,7 +14,6 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
-    "@tanstack/vue-query": "^4.34.0",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "pinia": "^2.0.11",

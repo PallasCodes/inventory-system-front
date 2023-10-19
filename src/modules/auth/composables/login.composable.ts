@@ -1,21 +1,14 @@
 import { Loading, LocalStorage } from 'quasar'
 import { api } from 'src/api'
+import { AuthService } from 'src/api/auth.api'
 import { useAuthStore } from 'src/stores/auth-store'
-
-// const router = useRouter()
-
-const loginUser = async (email: string, password: string) => {
-  const response = await api.post('/auth/login', { email, password })
-  return response
-}
+import { handleRequest } from 'src/utils/handleRequest'
 
 export const useLoginUser = async (email: string, password: string): Promise<boolean> => {
   try {
     Loading.show()
-    const { status, data } = await loginUser(email, password)
+    const { data } = await handleRequest(AuthService.login, { email, password })
     Loading.hide()
-
-    if (status !== 201) return false
 
     const { setToken } = useAuthStore()
     setToken(data.token)
@@ -24,8 +17,6 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
 
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
 
-    const response = await api.get('/item')
-    console.log(response)
     return true
   } catch (e) {
     Loading.hide()
