@@ -3,7 +3,7 @@
     <q-header id="navbar" class="q-pa-sm">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
-        <q-toolbar-title> Title </q-toolbar-title>
+        <q-toolbar-title> {{ routeStore.getPageTitle }} </q-toolbar-title>
         <q-btn round flat icon="settings">
           <q-menu>
             <q-list>
@@ -174,6 +174,9 @@ import { ref } from 'vue'
 
 import { useLogoutUser } from 'src/modules/auth/composables/login.composable'
 import { useRouter } from 'vue-router'
+import { useRouteStore } from 'src/stores/routes-store'
+
+const routeStore = useRouteStore()
 
 const router = useRouter()
 

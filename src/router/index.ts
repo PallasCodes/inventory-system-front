@@ -1,14 +1,10 @@
 import { route } from 'quasar/wrappers'
-import {
-  // createMemoryHistory,
-  createRouter,
-  // createWebHashHistory,
-  createWebHistory,
-} from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
 import routes from './mainRoutes'
 
 import { useAuthStore } from 'src/stores/auth-store'
+import { useRouteStore } from 'src/stores/routes-store'
 
 /*
  * If not building with SSR mode, you can
@@ -34,6 +30,9 @@ export default route(function (/* { store, ssrContext } */) {
 
   Router.beforeEach((to, from, next) => {
     const { isLoggedIn } = useAuthStore()
+    const { setPageTitle } = useRouteStore()
+
+    setPageTitle((to.meta.pageTitle as string) || '')
 
     if (!to.meta.noAuth && !isLoggedIn) {
       next('/login')
