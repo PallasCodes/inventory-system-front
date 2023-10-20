@@ -36,10 +36,11 @@ const login = async () => {
   <q-layout>
     <q-page-container>
       <div class="row justify-center items-center" style="min-height: 100vh">
-        <div class="col-6">
-          <q-card>
+        <div class="col-10 col-md-6">
+          <span class="text-center text-h4 q-mb-lg block">Inventario IM</span>
+          <q-card style="width: 100%; max-width: 420px" class="q-mx-auto q-pa-sm">
             <q-card-section>
-              <span class="text-h5">Login</span>
+              <span class="text-h6">Login</span>
               <q-form @submit.prevent="login" ref="loginForm">
                 <div class="row">
                   <div class="col-12">
