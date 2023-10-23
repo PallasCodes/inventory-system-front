@@ -37,6 +37,8 @@ export async function handleRequest(
   try {
     const response = await fn(...args)
 
+    console.log(response)
+
     const endTime = new Date()
 
     responseObj.data = response.data.responseData
