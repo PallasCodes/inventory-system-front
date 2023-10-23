@@ -7,18 +7,19 @@ import { handleRequest } from 'src/utils/handleRequest'
 export const useLoginUser = async (email: string, password: string): Promise<boolean> => {
   try {
     Loading.show()
-    const { data } = await handleRequest(AuthService.login, { email, password })
+    const res = await handleRequest(AuthService.login, { email, password })
+    console.log(res)
 
-    if (!data.token) throw new Error()
+    // if (!data.token) throw new Error()
 
-    Loading.hide()
+    // Loading.hide()
 
-    const { setToken } = useAuthStore()
-    setToken(data.token)
+    // const { setToken } = useAuthStore()
+    // setToken(data.token)
 
-    LocalStorage.set('token', data.token)
+    // LocalStorage.set('token', data.token)
 
-    api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
+    // api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
 
     return true
   } catch (e) {
