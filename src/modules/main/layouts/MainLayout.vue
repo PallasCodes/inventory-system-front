@@ -23,7 +23,14 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="leftDrawerOpen" side="left" dark id="left-drawer">
+    <q-drawer
+      show-if-above
+      v-model="leftDrawerOpen"
+      side="left"
+      dark
+      id="left-drawer"
+      style="box-shadow: rgba(90, 90, 104, 0.4) 16px 0px 38px 12px !important"
+    >
       <div>
         <span class="text-h6 q-pa-md q-pb-lg block">INVENTARIO IM</span>
       </div>
@@ -163,7 +170,9 @@
 
     <q-page-container id="page-container">
       <q-scroll-area style="height: calc(100vh - 66px); width: 100%">
-        <router-view />
+        <q-page class="q-mx-xl q-py-md">
+          <router-view />
+        </q-page>
       </q-scroll-area>
     </q-page-container>
   </q-layout>
@@ -221,7 +230,6 @@ function logout() {
 }
 
 #left-drawer {
-  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   background-color: #0f172a;
 }
 </style>

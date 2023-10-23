@@ -15,26 +15,26 @@ const filteredStates = ref<string[]>([])
 const itemCards = ref<ItemCard[]>([
   {
     amount: 100,
-    color: 'primary',
+    color: 'green',
     icon: 'check',
     description: 'Items disponibles',
   },
   {
     amount: 20,
     color: 'red',
-    icon: 'check',
+    icon: 'close',
     description: 'Items no disponibles',
   },
   {
     amount: 80,
-    color: 'green',
-    icon: 'check',
+    color: 'primary',
+    icon: 'real_estate_agent',
     description: 'Items prestados',
   },
   {
     amount: 20,
     color: 'orange',
-    icon: 'check',
+    icon: 'hourglass_disabled',
     description: 'Items pendientes',
   },
 ])
@@ -57,63 +57,61 @@ const onClickRow = async (idItem: string) => {
 </script>
 
 <template>
-  <q-page class="q-mx-lg q-py-md">
-    <ItemsInfoCardsList :items-cards="itemCards" class="q-mb-xl" />
+  <ItemsInfoCardsList :items-cards="itemCards" class="q-mb-xl" />
 
-    <div class="row">
-      <div class="col-auto">
-        <q-input
-          v-model="search"
-          type="search"
-          placeholder="Buscar item"
-          dense
-          standout
-          filled
-          style="font-size: 12px !important; width: 280px"
-          class="q-mr-xl"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="col-auto">
-        <q-select
-          borderless
-          v-model="filteredCategories"
-          :options="[]"
-          label="Filtrar por estatus"
-          dense
-          style="width: 160px"
-          class="q-mr-lg"
-        />
-      </div>
-      <div class="col-auto">
-        <q-select
-          borderless
-          v-model="filteredStates"
-          :options="[]"
-          label="Filtrar por categoría"
-          dense
-          style="width: 160px"
-        />
-      </div>
+  <div class="row">
+    <div class="col-auto">
+      <q-input
+        v-model="search"
+        type="search"
+        placeholder="Buscar item"
+        dense
+        standout
+        filled
+        style="font-size: 12px !important; width: 280px"
+        class="q-mr-xl"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
     </div>
+    <div class="col-auto">
+      <q-select
+        borderless
+        v-model="filteredCategories"
+        :options="[]"
+        label="Filtrar por estatus"
+        dense
+        style="width: 160px"
+        class="q-mr-lg"
+      />
+    </div>
+    <div class="col-auto">
+      <q-select
+        borderless
+        v-model="filteredStates"
+        :options="[]"
+        label="Filtrar por categoría"
+        dense
+        style="width: 160px"
+      />
+    </div>
+  </div>
 
-    <div class="row q-mt-lg">
-      <div class="col-auto">
-        <ItemsTable
-          :items="items"
-          :is-loading="isTableDataLoading"
-          @on-row-click="onClickRow"
-        />
-      </div>
+  <div class="row q-mt-lg">
+    <div class="col-auto">
+      <ItemsTable
+        :items="items"
+        :is-loading="isTableDataLoading"
+        @on-row-click="onClickRow"
+      />
     </div>
+  </div>
 
-    <div class="row q-mt-lg">
-      <div class="auto">
-        <SingleItemsTable :single-items="singleItems" :is-loading="isTableDataLoading" />
-      </div>
+  <div class="row q-mt-lg">
+    <div class="auto">
+      <SingleItemsTable :single-items="singleItems" :is-loading="isTableDataLoading" />
     </div>
-  </q-page>
+  </div>
 </template>
