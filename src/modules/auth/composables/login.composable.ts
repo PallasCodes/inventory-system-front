@@ -8,6 +8,9 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
   try {
     Loading.show()
     const { data } = await handleRequest(AuthService.login, { email, password })
+
+    if (!data.token) throw new Error()
+
     Loading.hide()
 
     const { setToken } = useAuthStore()
