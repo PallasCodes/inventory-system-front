@@ -17,19 +17,23 @@ interface HttpResponse {
   data: any
   error: boolean
   message?: Message
-  requestTime: number | string
+  requestTime?: number | string
+  status: number | string
+  statusText: string
 }
 
 export async function handleRequest(
   fn: (...fnArgs: any) => Promise<AxiosCustomResponse>,
   ...args: any
-) {
+): Promise<HttpResponse> {
   if (!fn) throw new Error('No function was given')
 
   const responseObj: HttpResponse = {
     data: {},
     error: false,
     requestTime: 0,
+    status: 0,
+    statusText: '',
   }
 
   const startTime = new Date()
@@ -45,6 +49,8 @@ export async function handleRequest(
     responseObj.requestTime = msToHours(+endTime - +startTime)
     responseObj.error = response.data.error
     responseObj.message = new Message(response.data.message)
+    responseObj.status = response.status
+    responseObj.statusText = response.statusText
 
     return responseObj
   } catch (error) {
@@ -53,6 +59,8 @@ export async function handleRequest(
       data: null,
       error: true,
       message: handleRequestError(error),
+      status: 400,
+      statusText: 'Error',
     }
   }
 }

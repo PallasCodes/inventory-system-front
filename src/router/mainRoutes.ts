@@ -14,6 +14,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../modules/auth/pages/LoginPage.vue'),
     meta: {
       noAuth: true,
+      pageTitle: 'Iniciar sesión',
     },
   },
 
@@ -22,6 +23,9 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/:catchAll(.*)*',
     component: () => import('../modules/main/pages/ErrorNotFound.vue'),
+    meta: {
+      pageTitle: 'Página no encontrada',
+    },
   },
 ]
 

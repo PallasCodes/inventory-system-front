@@ -1,4 +1,4 @@
-import { Loading, LocalStorage } from 'quasar'
+import { Loading, LocalStorage, Notify } from 'quasar'
 import { api } from 'src/api'
 import { AuthService } from 'src/api/auth.api'
 import { useAuthStore } from 'src/stores/auth-store'
@@ -7,7 +7,18 @@ import { handleRequest } from 'src/utils/handleRequest'
 export const useLoginUser = async (email: string, password: string): Promise<boolean> => {
   try {
     Loading.show()
-    const { data } = await handleRequest(AuthService.login, { email, password })
+
+    const { data, status } = await handleRequest(AuthService.login, { email, password })
+
+    if (status === 401) {
+      Notify.create({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'danger',
+        message: 'Credenciales no válidas',
+      })
+      return false
+    }
 
     if (!data.token) throw new Error()
 
@@ -24,6 +35,14 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
   } catch (e) {
     Loading.hide()
     console.error(e)
+
+    Notify.create({
+      color: 'red-5',
+      textColor: 'white',
+      icon: 'danger',
+      message: 'Ocurrió un error en el servidor',
+    })
+
     return false
   }
 }

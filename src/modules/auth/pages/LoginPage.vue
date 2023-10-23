@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { QForm, useQuasar } from 'quasar'
+import { QForm } from 'quasar'
 
 import { useLoginUser } from '../composables/login.composable'
 import { useRouter } from 'vue-router'
-
-const $q = useQuasar()
 const router = useRouter()
 
 const email = ref<string>()
@@ -19,16 +17,7 @@ const login = async () => {
     password.value as string,
   )
 
-  if (validCredentials) {
-    router.replace('/')
-  } else {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: 'Credenciales no válidas',
-    })
-  }
+  if (validCredentials) router.replace('/')
 }
 </script>
 
@@ -40,7 +29,7 @@ const login = async () => {
           <span class="text-center text-h4 q-mb-lg block">Inventario IM</span>
           <q-card style="width: 100%; max-width: 420px" class="q-mx-auto q-pa-sm">
             <q-card-section>
-              <span class="text-h6">Login</span>
+              <span class="text-h6 q-mb-sm">Login</span>
               <q-form @submit.prevent="login" ref="loginForm">
                 <div class="row">
                   <div class="col-12">
@@ -56,7 +45,7 @@ const login = async () => {
                   <div class="col-12">
                     <q-input
                       v-model="password"
-                      label="Password"
+                      label="Contraseña"
                       type="password"
                       :rules="[
                         (val: string) => (val && val.length > 0) || 'Please type something',
@@ -67,11 +56,11 @@ const login = async () => {
                     <q-btn
                       type="Submit"
                       color="primary"
-                      class="q-mt-md"
+                      class="q-mt-md full-width"
                       :rules="[
                         (val: string) => (val && val.length > 0) || 'Please type something',
                       ]"
-                      >Login</q-btn
+                      >Iniciar sesión</q-btn
                     >
                   </div>
                 </div>
