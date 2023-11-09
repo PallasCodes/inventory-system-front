@@ -32,9 +32,9 @@
       style="box-shadow: rgba(90, 90, 104, 0.4) 16px 0px 38px 12px !important"
     >
       <div>
-        <span class="text-h6 q-pa-md q-pb-lg block">INVENTARIO IM</span>
+        <span class="text-h6 q-pa-lg block">INVENTARIO IM</span>
       </div>
-      <q-list id="drawer">
+      <q-list id="drawer" class="q-pl-sm">
         <div class="q-px-md q-pb-xs text-grey-5">
           <span class="block font-weight-medium">Inventario</span>
         </div>
@@ -144,7 +144,11 @@
           </q-item-section>
         </q-item>
 
-        <q-item to="/login" class="nav-item" active-class="q-item-no-link-highlighting">
+        <q-item
+          to="/register-employee"
+          class="nav-item"
+          active-class="q-item-no-link-highlighting"
+        >
           <q-item-section avatar>
             <q-icon name="person_add" />
           </q-item-section>
@@ -154,7 +158,7 @@
         </q-item>
 
         <q-item
-          :to="{ name: 'inventory' }"
+          :to="{ name: 'registerDept' }"
           class="nav-item"
           active-class="q-item-no-link-highlighting"
         >

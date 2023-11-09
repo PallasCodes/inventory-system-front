@@ -44,10 +44,17 @@ const singleItems = ref<SingleItemTable[]>([])
 
 const isTableDataLoading = ref<boolean>(true)
 
+function selectFirstRow() {
+  const rows = document.querySelectorAll('.q-table .cursor-pointer')
+  if (rows.length >= 1) (rows[0] as HTMLTableRowElement).click()
+}
+
 onMounted(async () => {
   const { data } = await handleRequest(ItemService.findAll)
   isTableDataLoading.value = false
   items.value = data as ItemTable[]
+
+  setTimeout(selectFirstRow, 500)
 })
 
 const onClickRow = async (idItem: string) => {
