@@ -61,7 +61,7 @@ export async function handleRequest(
       console.log('logout')
     }
 
-    useLogoutUser()
+    // useLogoutUser()
 
     return {
       data: null,

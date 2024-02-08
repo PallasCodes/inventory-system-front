@@ -1,7 +1,43 @@
 <script setup lang="ts">
-function registerDept() {
-  console.log('first')
+import { ref } from 'vue'
+
+import { handleRequest } from 'src/utils/handleRequest'
+import { notEmpty } from 'src/utils/formValidations'
+import { Loading, QForm, useQuasar } from 'quasar'
+import { DepartmentService } from 'src/api/department.api'
+
+const $q = useQuasar()
+const form = ref<QForm>()
+
+async function registerDept() {
+  Loading.show()
+
+  const { error, message } = await handleRequest(await DepartmentService.create, {
+    name: formData.value.name,
+  })
+
+  Loading.hide()
+
+  if (error) {
+    message?.display()
+  } else {
+    $q.notify({
+      color: 'green',
+      textColor: 'white',
+      icon: 'check',
+      message: 'Departamento registrado con éxito',
+    })
+    form.value?.resetValidation()
+    console.log(form.value)
+  }
 }
+interface FormData {
+  name: string
+}
+
+const formData = ref<FormData>({
+  name: '',
+})
 </script>
 
 <template>
@@ -12,18 +48,18 @@ function registerDept() {
           <div class="text-subtitle1 text-weight-medium">Departamento</div>
         </q-card-section>
         <q-card-section class="q-pt-sm">
-          <q-form @submit.prevent="registerDept">
+          <q-form @submit.prevent="registerDept" ref="form">
             <div class="row q-gutter-y-sm">
               <div class="col-12">
-                <q-input type="text" label="Nombre"></q-input>
+                <q-input
+                  v-model="formData.name"
+                  type="text"
+                  label="Nombre*"
+                  :rules="[notEmpty]"
+                />
               </div>
               <div class="col-12">
-                <q-select label="Sucursal"></q-select>
-              </div>
-              <div class="col-12">
-                <q-btn type="submit" color="primary" class="q-mt-md"
-                  >Registrar Departamento</q-btn
-                >
+                <q-btn type="submit" color="primary">Registrar Departamento</q-btn>
               </div>
             </div>
           </q-form>

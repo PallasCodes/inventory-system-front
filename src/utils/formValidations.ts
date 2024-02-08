@@ -3,3 +3,5 @@ export const notEmpty = (val: string) =>
 
 export const notEmptyNumber = (val: number) =>
   (val && val.toString() !== '') || 'El campo es requerido'
+
+export const selectNotEmpty = (val: any) => val || 'El campo es requerido'

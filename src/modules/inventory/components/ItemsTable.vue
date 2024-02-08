@@ -63,7 +63,7 @@ const columns: QTableProps['columns'] = [
 
 const emit = defineEmits<{ (e: 'onRowClick', idItem: string): void }>()
 
-const onClickRow = (evt: Event, row: ItemTable) => {
+const onRowClick = (evt: Event, row: ItemTable) => {
   emit('onRowClick', row.idItem)
 }
 </script>
@@ -73,9 +73,9 @@ const onClickRow = (evt: Event, row: ItemTable) => {
     title="Items en inventario"
     :rows="props.items || []"
     :columns="columns"
-    row-key="idItem"
     :loading="props.isLoading"
     :pagination="{ rowsPerPage: 20 }"
-    @row-click="onClickRow"
+    row-key="idItem"
+    @row-click="onRowClick"
   />
 </template>

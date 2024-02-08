@@ -42,7 +42,7 @@ const props = defineProps<Props>()
               label="Estado"
               option-value="idSingleItemStatus"
               option-label="name"
-            ></q-select>
+            />
           </div>
         </div>
       </q-item-section>

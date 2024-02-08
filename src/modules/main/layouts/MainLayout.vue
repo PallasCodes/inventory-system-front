@@ -132,7 +132,7 @@
           <span class="block font-weight-medium">Empleados</span>
         </div>
         <q-item
-          :to="{ name: 'login' }"
+          :to="{ name: 'employees' }"
           class="nav-item"
           active-class="q-item-no-link-highlighting"
         >
