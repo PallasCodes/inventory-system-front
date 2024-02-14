@@ -1,13 +1,14 @@
 import { RouteRecordRaw } from 'vue-router'
 import inventoryRoutes from './inventoryRoutes'
 import employeeRoutes from './employee-routes'
+import borrowingRoutes from './borrowings-routes'
 
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('../modules/main/layouts/MainLayout.vue'),
     redirect: 'home',
-    children: [...inventoryRoutes, ...employeeRoutes],
+    children: [...inventoryRoutes, ...employeeRoutes, ...borrowingRoutes],
   },
   {
     path: '/login',

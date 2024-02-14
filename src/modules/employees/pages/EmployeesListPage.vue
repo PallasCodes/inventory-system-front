@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { QTableProps } from 'quasar'
+import { onMounted, ref } from 'vue'
+
 import { EmployeeService } from 'src/api/employee.api'
 import { handleRequest } from 'src/utils/handleRequest'
-import { onMounted, ref } from 'vue'
-import { Employee } from '../interfaces/employee.interface'
 
 interface ItemTable {
   idEmployee: string
@@ -12,8 +12,6 @@ interface ItemTable {
 }
 
 const employees = ref<ItemTable[]>([])
-
-// const visibleColumns = ['fullName', 'branch']
 
 const columns: QTableProps['columns'] = [
   {

@@ -94,7 +94,7 @@
           <span class="block font-weight-medium">Préstamos</span>
         </div>
         <q-item
-          :to="{ name: 'login' }"
+          :to="{ name: 'borrowings' }"
           class="nav-item"
           active-class="q-item-no-link-highlighting"
         >
