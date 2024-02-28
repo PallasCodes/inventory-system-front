@@ -6,4 +6,7 @@ export const AuthService = {
   login({ email, password }: { email: string; password: string }) {
     return api.post(`${BASE_URL}/login`, { email, password })
   },
+  checkStatus() {
+    return api.post(`${BASE_URL}/check-status`)
+  },
 }

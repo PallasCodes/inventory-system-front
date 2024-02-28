@@ -1,6 +1,5 @@
 import { AxiosError, AxiosResponse } from 'axios'
 import { Message, MessageComponent, MessageType } from 'src/utils/Message'
-import { useLogoutUser } from 'src/modules/auth/composables/login.composable'
 
 export interface AxiosCustomResponse extends AxiosResponse {
   data: {
@@ -42,8 +41,6 @@ export async function handleRequest(
   try {
     const response = await fn(...args)
 
-    console.log(response)
-
     const endTime = new Date()
 
     responseObj.data = response.data.responseData
@@ -56,12 +53,6 @@ export async function handleRequest(
     return responseObj
   } catch (error: AxiosError | any) {
     console.log(error)
-
-    if (error.request.status) {
-      console.log('logout')
-    }
-
-    // useLogoutUser()
 
     return {
       data: null,
