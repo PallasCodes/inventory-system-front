@@ -160,19 +160,6 @@
             <q-item-label>Registrar empleado</q-item-label>
           </q-item-section>
         </q-item>
-
-        <q-item
-          :to="{ name: 'registerDept' }"
-          class="nav-item"
-          active-class="q-item-no-link-highlighting"
-        >
-          <q-item-section avatar>
-            <q-icon name="room_preferences" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Registrar departamento</q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
     </q-drawer>
 
