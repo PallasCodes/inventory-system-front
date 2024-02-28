@@ -22,7 +22,6 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     sortable: true,
     field: (row) => row.singleItem?.item?.name,
-    style: 'min-width: 150px',
   },
   {
     name: 'employee',
@@ -31,7 +30,6 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     sortable: true,
     field: (row) => row.employee?.fullName,
-    style: 'min-width: 150px',
   },
   {
     name: 'borrowingDate',
@@ -40,7 +38,6 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     sortable: true,
     field: (row) => formatters.isoToRegularDate(row.borrowingDate),
-    style: 'min-width: 150px',
   },
   {
     name: 'borrowingDeadline',
@@ -76,11 +73,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <q-table
-    title="Préstamos"
-    :rows="borrowings"
-    :columns="columns"
-    :pagination="{ rowsPerPage: 20 }"
-    row-key="idBorrowing"
-  ></q-table>
+  <div class="row">
+    <div class="col">
+      <q-table
+        title="Préstamos"
+        :rows="borrowings"
+        :columns="columns"
+        :pagination="{ rowsPerPage: 20 }"
+        row-key="idBorrowing"
+      ></q-table>
+    </div>
+  </div>
 </template>

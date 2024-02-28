@@ -106,7 +106,11 @@
           </q-item-section>
         </q-item>
 
-        <q-item to="/login" class="nav-item" active-class="q-item-no-link-highlighting">
+        <q-item
+          :to="{ name: 'registerBorrowing' }"
+          class="nav-item"
+          active-class="q-item-no-link-highlighting"
+        >
           <q-item-section avatar>
             <q-icon name="receipt_long" />
           </q-item-section>
@@ -116,7 +120,7 @@
         </q-item>
 
         <q-item
-          :to="{ name: 'inventory' }"
+          :to="{ name: 'registerReturn' }"
           class="nav-item"
           active-class="q-item-no-link-highlighting"
         >
