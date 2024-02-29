@@ -59,7 +59,7 @@ const tableIsLoading = ref<boolean>(true)
       <div class="col-auto q-mt-lg">
         <img
           style="width: 100%; height: auto"
-          src="https://picsum.photos/id/237/300/300"
+          :src="categoryData?.imgUrl ? categoryData.imgUrl : ''"
         />
       </div>
     </div>

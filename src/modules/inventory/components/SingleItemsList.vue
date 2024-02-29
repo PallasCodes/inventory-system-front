@@ -44,6 +44,13 @@ const props = defineProps<Props>()
               option-label="name"
             />
           </div>
+          <div class="col-12">
+            <q-file
+              v-model="SingleItemsStore.store[item - 1].image"
+              label="Imagen"
+              accept=".jpg, .png, .jpeg, image/*"
+            />
+          </div>
         </div>
       </q-item-section>
     </q-item>

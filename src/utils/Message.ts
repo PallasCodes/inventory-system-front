@@ -1,4 +1,6 @@
-import { Notify } from 'quasar'
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
 
 export enum MessageComponent {
   DIALOG = 'dialog',
@@ -51,7 +53,7 @@ export class Message {
   }
 
   display() {
-    Notify.create({
+    $q.notify({
       color: this.color,
       textColor: 'white',
       icon: this.icon,

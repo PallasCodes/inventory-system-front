@@ -1,12 +1,21 @@
 import { reactive } from 'vue'
+import { uid } from 'quasar'
 
 export interface SingleItem {
+  tempId: string
   singleItemStatus: { idSingleItemStatus: number; name: string }
   comments?: string
+  image?: File | null
+  imgUrl?: string | null
 }
 
 const store = reactive<SingleItem[]>([
-  { singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' }, comments: '' },
+  {
+    tempId: uid(),
+    singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' },
+    comments: '',
+    image: null,
+  },
 ])
 
 const item = reactive({
@@ -23,8 +32,10 @@ function updateStore(singleItemsAmount: number) {
       { length: singleItemsAmount - store.length },
       () => {
         return {
+          tempId: uid(),
           singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' },
           comments: '',
+          image: null,
         }
       },
     )

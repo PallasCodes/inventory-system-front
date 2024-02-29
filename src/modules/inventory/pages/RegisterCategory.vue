@@ -1,38 +1,63 @@
 <script setup lang="ts">
 import { Loading, useQuasar } from 'quasar'
-import { CategoryService } from 'src/api/category.api'
-import { handleRequest } from 'src/utils/handleRequest'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+
+import { CategoryService } from 'src/api/category.api'
+import { handleRequest } from 'src/utils/handleRequest'
+import { makeAPICall } from 'src/utils/imgBb'
 
 const $q = useQuasar()
 const router = useRouter()
 
 interface RegisterCategoryForm {
-  name: string
-  description?: string
-  imgFile?: File
+  name: string | null
+  description?: string | null
+  imgFile?: File | null
+  imgUrl?: string | null
 }
 
 const formData = ref<RegisterCategoryForm>({
-  name: '',
-  description: '',
+  name: null,
+  description: null,
+  imgFile: null,
+  imgUrl: null,
 })
 
 const registerCategory = async () => {
   Loading.show()
 
-  await handleRequest(CategoryService.create, formData.value)
+  const formPayload = new FormData()
 
-  Loading.hide()
+  formPayload.append('name', 'category_' + formData.value.name)
+  formPayload.append('image', formData.value.imgFile as File)
+  formPayload.append('key', '984cd4fb80b1dece88ef94d4ab376823')
 
-  $q.notify({
-    color: 'green',
-    textColor: 'white',
-    icon: 'check',
-    message: 'Categoría registrada con éxito',
-  })
-  router.replace({ name: 'categories' })
+  try {
+    const { data } = await makeAPICall({
+      image: formData.value.imgFile,
+      name: 'category_' + formData.value.name,
+    })
+
+    formData.value.imgUrl = data.data.thumb.url
+    delete formData.value.imgFile
+
+    await handleRequest(CategoryService.create, formData.value)
+
+    Loading.hide()
+
+    $q.notify({
+      color: 'green',
+      textColor: 'white',
+      icon: 'check',
+      message: 'Categoría registrada con éxito',
+    })
+    router.replace({ name: 'categories' })
+  } catch (error) {
+    console.log(error)
+  }
+
+  // TODO: use env var for key
 }
 </script>
 

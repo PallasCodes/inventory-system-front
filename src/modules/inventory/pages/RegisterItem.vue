@@ -12,6 +12,8 @@ import { notEmpty, notEmptyNumber } from 'src/utils/formValidations'
 import { handleRequest } from 'src/utils/handleRequest'
 
 import SingleItemsList, { SingleItemStatus } from '../components/SingleItemsList.vue'
+import { externalApi } from 'src/api'
+import { makeAPICall } from 'src/utils/imgBb'
 
 // TODO: add autocomplete for categories
 
@@ -34,17 +36,16 @@ onMounted(async () => {
 
 /* ================= FORM ================= */
 interface FormData {
-  name: string
-  description: string
+  name: string | null
+  description?: string | null
   // imgFiles: []
   categoriesIds: { idCategory: string; name: string }[]
   amount: number
 }
 
 const formData = ref<FormData>({
-  name: '',
-  description: '',
-  // imgFiles: [],
+  name: null,
+  description: null,
   categoriesIds: [],
   amount: 1,
 })
@@ -60,12 +61,29 @@ async function onClickNext() {
 async function onSubmit() {
   Loading.show()
 
+  const imgPayload = SingleItemStore.store
+    .filter((i) => i.image)
+    .map((i) => ({ image: i.image, name: i.tempId }))
+
+  const promises = imgPayload.map(makeAPICall)
+  const responses = await Promise.all(promises)
+
+  SingleItemStore.store.forEach((sItem, i) => {
+    if (sItem.image) {
+      const imgUrl = responses.find((res) => (res.data.data.title = sItem.tempId))
+      console.log(imgUrl)
+      SingleItemStore.store[i].imgUrl = imgUrl.data.data.thumb.url
+    }
+    delete SingleItemStore.store[i].image
+  })
+
   const payload = {
     ...formData.value,
     categoriesIds: formData.value.categoriesIds.map((category) => category.idCategory),
     singleItems: SingleItemStore.store.map((singleItem: SingleItem) => ({
       comments: singleItem.comments,
       idSingleItemStatus: singleItem.singleItemStatus.idSingleItemStatus,
+      imgUrl: singleItem.imgUrl,
     })),
   }
 

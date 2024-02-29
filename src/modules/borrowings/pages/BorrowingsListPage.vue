@@ -10,9 +10,11 @@ interface ItemTable {
   idEmployee: string
   fullName: string
   branch: string
+  returned: boolean
 }
 
 const borrowings = ref<ItemTable[]>([])
+const tableData = ref<ItemTable[]>([])
 
 const columns: QTableProps['columns'] = [
   {
@@ -56,6 +58,14 @@ const columns: QTableProps['columns'] = [
     sortable: true,
   },
   {
+    name: 'returned',
+    label: 'Devuelto',
+    align: 'left',
+    field: 'returned',
+    required: true,
+    sortable: true,
+  },
+  {
     name: 'comments',
     label: 'Comentarios',
     align: 'left',
@@ -65,23 +75,53 @@ const columns: QTableProps['columns'] = [
   },
 ]
 
+const showDueOnly = ref(false)
+
 onMounted(async () => {
   const { data, message, error } = await handleRequest(BorrowingsService.findAll)
 
-  if (!error) borrowings.value = data
+  if (!error) {
+    tableData.value = data
+    borrowings.value = data
+  }
 })
+
+function onToggle(val: boolean) {
+  if (val) {
+    tableData.value = borrowings.value.filter((i) => i.returned)
+  } else {
+    tableData.value = borrowings.value
+  }
+}
 </script>
 
 <template>
   <div class="row">
     <div class="col">
+      <q-toggle
+        v-model="showDueOnly"
+        label="Mostrar solo pendientes"
+        left-label
+        @update:model-value="onToggle"
+      />
       <q-table
         title="Préstamos"
-        :rows="borrowings"
+        :rows="tableData"
         :columns="columns"
         :pagination="{ rowsPerPage: 20 }"
         row-key="idBorrowing"
-      ></q-table>
+      >
+        <template #body-cell-returned="{ value }">
+          <q-td>
+            <q-icon
+              :name="value ? 'check' : 'close'"
+              :color="value ? 'green' : 'red'"
+              size="sm"
+              class="q-mx-auto"
+            />
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </div>
 </template>
