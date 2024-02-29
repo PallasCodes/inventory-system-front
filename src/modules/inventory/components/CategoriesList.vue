@@ -15,7 +15,7 @@ const props = defineProps<Props>()
     <div
       class="col-12 col-sm-4 col-md-3 col-lg-2"
       v-for="category in props.categories"
-      :key="category.id"
+      :key="category.idCategory"
     >
       <category-card :category="category" />
     </div>

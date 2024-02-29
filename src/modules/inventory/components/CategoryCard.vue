@@ -41,7 +41,7 @@ const props = defineProps<Props>()
       round
     >
       <img
-        src="https://fastly.picsum.photos/id/369/200/200.jpg?hmac=mfma93Qqk_dWRARrDhIl7oid7sWebuZHhKQFsnMwwwE"
+        :src="category.imgUrl"
         style="
           width: 100%;
           height: auto;
