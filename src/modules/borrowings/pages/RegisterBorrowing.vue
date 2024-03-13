@@ -63,11 +63,13 @@ async function getItemsCatalog() {
 async function onItemSelected(idItem: Item) {
   const { data, error, message } = await handleRequest(ItemService.findOneById, idItem)
 
+  console.log(data.singleItems)
+
   if (error) {
     message?.display()
   } else {
     singleItemsCatalog.value = data.singleItems
-      .filter((i: any) => i.singleItemStatus.idSingleItemStatus === 1)
+      .filter((i: any) => i.singleItemStatus?.idSingleItemStatus === 1)
       .map((i: any) => i.sku)
     // TODO: CREATE A CATALOG OF CONSTANT VARIABLES SO THE IDSINGLEITEMSTATUS ISN'T HARD CODED
   }

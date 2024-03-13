@@ -30,7 +30,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'numTotalItems',
     label: 'Piezas',
-    required: true,
+    required: false,
     align: 'left',
     sortable: true,
     field: (row) => row.numTotalItems,
@@ -38,7 +38,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'numAvailableItems',
     label: 'Disponibles',
-    required: true,
+    required: false,
     align: 'left',
     sortable: true,
     field: (row) => row.numAvailableItems,
@@ -46,7 +46,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'numBorrowedItems',
     label: 'Prestadas',
-    required: true,
+    required: false,
     align: 'left',
     sortable: true,
     field: (row) => row.numBorrowedItems,
@@ -54,7 +54,7 @@ const columns: QTableProps['columns'] = [
   {
     name: 'numUnavailableItems',
     label: 'No disponibles',
-    required: true,
+    required: false,
     align: 'left',
     sortable: true,
     field: (row) => row.numTotalItems - row.numAvailableItems,
@@ -70,7 +70,7 @@ const onRowClick = (evt: Event, row: ItemTable) => {
 
 <template>
   <q-table
-    title="Items en inventario"
+    title="Modelos en inventario"
     :rows="props.items || []"
     :columns="columns"
     :loading="props.isLoading"

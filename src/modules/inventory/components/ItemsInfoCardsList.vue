@@ -4,6 +4,7 @@ export interface ItemCard {
   amount: number
   description: string
   color: string
+  name: string
 }
 
 interface Props {

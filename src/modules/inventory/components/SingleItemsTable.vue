@@ -38,14 +38,14 @@ const columns: QTableProps['columns'] = [
     required: true,
     align: 'left',
     sortable: true,
-    field: (row) => row.singleItemStatus.name,
+    field: (row) => row.singleItemStatus?.name,
   },
 ]
 </script>
 
 <template>
   <q-table
-    title="Piezas del Item:"
+    title="Items del modelo:"
     :rows="props.singleItems || []"
     :columns="columns"
     row-key="idSingleItem"

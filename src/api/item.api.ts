@@ -15,4 +15,7 @@ export const ItemService = {
   findByCategory(categoryId: string) {
     return api.get(`${BASE_URL}/category/${categoryId}/items`)
   },
+  getItemsCount() {
+    return api.get(`${BASE_URL}/counts`)
+  },
 }

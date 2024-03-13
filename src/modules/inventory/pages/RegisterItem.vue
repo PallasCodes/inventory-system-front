@@ -12,7 +12,6 @@ import { notEmpty, notEmptyNumber } from 'src/utils/formValidations'
 import { handleRequest } from 'src/utils/handleRequest'
 
 import SingleItemsList, { SingleItemStatus } from '../components/SingleItemsList.vue'
-import { externalApi } from 'src/api'
 import { makeAPICall } from 'src/utils/imgBb'
 
 // TODO: add autocomplete for categories

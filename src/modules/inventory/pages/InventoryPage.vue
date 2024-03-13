@@ -7,35 +7,46 @@ import { handleRequest } from 'src/utils/handleRequest'
 import ItemsInfoCardsList, { ItemCard } from '../components/ItemsInfoCardsList.vue'
 import ItemsTable, { ItemTable } from '../components/ItemsTable.vue'
 import SingleItemsTable, { SingleItemTable } from '../components/SingleItemsTable.vue'
+import { Loading } from 'quasar'
 
 const search = ref<string>('')
 const filteredCategories = ref<string[]>([])
 const filteredStates = ref<string[]>([])
+const totals = ref({
+  available: 0,
+  borrowed: 0,
+  fixing: 0,
+  not_available: 0,
+})
 
 const itemCards = ref<ItemCard[]>([
   {
-    amount: 100,
+    amount: 0,
     color: 'green',
     icon: 'check',
     description: 'Items disponibles',
+    name: 'available',
   },
   {
-    amount: 20,
+    amount: 0,
     color: 'red',
     icon: 'close',
     description: 'Items no disponibles',
+    name: 'not_available',
   },
   {
-    amount: 80,
+    amount: 0,
     color: 'primary',
     icon: 'real_estate_agent',
     description: 'Items prestados',
+    name: 'borrowed',
   },
   {
-    amount: 20,
+    amount: 0,
     color: 'orange',
-    icon: 'hourglass_disabled',
-    description: 'Items pendientes',
+    icon: 'build',
+    description: 'Items en reparación',
+    name: 'fixing',
   },
 ])
 
@@ -50,16 +61,36 @@ function selectFirstRow() {
 }
 
 onMounted(async () => {
+  Loading.show()
+
+  await Promise.all([getItems(), getItemsCount()])
+
+  Loading.hide()
+})
+
+async function onClickRow(idItem: string) {
+  const { data } = await handleRequest(ItemService.findOneById, idItem)
+  singleItems.value = data.singleItems as SingleItemTable[]
+}
+
+async function getItemsCount() {
+  const { data, message, error } = await handleRequest(ItemService.getItemsCount)
+
+  if (error) {
+    message?.display()
+  } else {
+    itemCards.value.forEach((itemCard: ItemCard) => {
+      itemCard.amount = data[itemCard.name]
+    })
+  }
+}
+
+async function getItems() {
   const { data } = await handleRequest(ItemService.findAll)
   isTableDataLoading.value = false
   items.value = data as ItemTable[]
 
   setTimeout(selectFirstRow, 500)
-})
-
-const onClickRow = async (idItem: string) => {
-  const { data } = await handleRequest(ItemService.findOneById, idItem)
-  singleItems.value = data.singleItems as SingleItemTable[]
 }
 </script>
 
