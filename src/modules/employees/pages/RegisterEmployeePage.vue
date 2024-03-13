@@ -97,7 +97,7 @@ async function onSelectBranch() {
                 />
               </div>
               <div class="col-12">
-                <q-btn type="submit" color="primary">Registrar Empleado</q-btn>
+                <q-btn type="submit" color="green">Registrar Empleado</q-btn>
               </div>
             </div>
           </q-form>

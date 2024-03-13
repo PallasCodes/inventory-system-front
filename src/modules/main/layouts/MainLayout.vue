@@ -73,7 +73,7 @@
             <q-icon name="add_circle" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Registrar item</q-item-label>
+            <q-item-label>Registrar modelo/item</q-item-label>
           </q-item-section>
         </q-item>
 

@@ -12,14 +12,15 @@ import { Loading } from 'quasar'
 const search = ref<string>('')
 const filteredCategories = ref<string[]>([])
 const filteredStates = ref<string[]>([])
-const totals = ref({
-  available: 0,
-  borrowed: 0,
-  fixing: 0,
-  not_available: 0,
-})
 
 const itemCards = ref<ItemCard[]>([
+  {
+    amount: 0,
+    color: 'primary',
+    icon: 'analytics',
+    description: 'Total de items',
+    name: 'totals',
+  },
   {
     amount: 0,
     color: 'green',
@@ -36,7 +37,7 @@ const itemCards = ref<ItemCard[]>([
   },
   {
     amount: 0,
-    color: 'primary',
+    color: 'secondary',
     icon: 'real_estate_agent',
     description: 'Items prestados',
     name: 'borrowed',
@@ -54,6 +55,7 @@ const items = ref<ItemTable[]>([])
 const singleItems = ref<SingleItemTable[]>([])
 
 const isTableDataLoading = ref<boolean>(true)
+const selectedItemName = ref<string>('')
 
 function selectFirstRow() {
   const rows = document.querySelectorAll('.q-table .cursor-pointer')
@@ -69,6 +71,8 @@ onMounted(async () => {
 })
 
 async function onClickRow(idItem: string) {
+  selectedItemName.value = items.value.find((item) => item.idItem === idItem)
+    ?.name as string
   const { data } = await handleRequest(ItemService.findOneById, idItem)
   singleItems.value = data.singleItems as SingleItemTable[]
 }
@@ -114,7 +118,7 @@ async function getItems() {
         </template>
       </q-input>
     </div>
-    <div class="col-auto">
+    <div class="col-auto q-mt-sm">
       <q-select
         borderless
         v-model="filteredCategories"
@@ -149,7 +153,11 @@ async function getItems() {
 
   <div class="row q-mt-lg">
     <div class="auto">
-      <SingleItemsTable :single-items="singleItems" :is-loading="isTableDataLoading" />
+      <SingleItemsTable
+        :single-items="singleItems"
+        :is-loading="isTableDataLoading"
+        :item-name="selectedItemName"
+      />
     </div>
   </div>
 </template>

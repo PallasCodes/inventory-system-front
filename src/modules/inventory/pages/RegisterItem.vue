@@ -111,7 +111,7 @@ const stepper = ref<QStepper>()
     <div class="row">
       <div class="col-12 col-sm-8 col-md-6 col-lg-4">
         <q-stepper v-model="step" animated ref="stepper">
-          <q-step :name="1" :done="step > 1" title="Registrar Item">
+          <q-step :name="1" :done="step > 1" title="Registrar Modelo">
             <q-form ref="form1">
               <div class="row q-gutter-sm">
                 <div class="col-12">
@@ -150,7 +150,7 @@ const stepper = ref<QStepper>()
                     v-model.number.lazy="formData.amount"
                     min="1"
                     max="20"
-                    label="Cantidad*"
+                    label="Num. de items*"
                     @update:model-value="SingleItemStore.updateStore"
                     :rules="[notEmptyNumber]"
                   />
@@ -158,7 +158,7 @@ const stepper = ref<QStepper>()
               </div>
             </q-form>
           </q-step>
-          <q-step :name="2" :done="step > 2" title="Registrar Piezas">
+          <q-step :name="2" :done="step > 2" title="Registrar Items">
             <single-items-list
               :single-items-amount="formData.amount"
               :single-item-statuses-catalog="singleItemsStatusesCatalog"

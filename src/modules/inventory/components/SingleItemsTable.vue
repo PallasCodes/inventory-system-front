@@ -10,6 +10,7 @@ export interface SingleItemTable {
 interface Props {
   singleItems: SingleItemTable[]
   isLoading: boolean
+  itemName: string
 }
 
 const props = defineProps<Props>()
@@ -41,15 +42,23 @@ const columns: QTableProps['columns'] = [
     field: (row) => row.singleItemStatus?.name,
   },
 ]
+
+function onRowClick(...args: any) {
+  console.log(args)
+}
 </script>
 
 <template>
   <q-table
-    title="Items del modelo:"
+    :title="`Items del modelo: ${itemName}`"
+    row-key="idSingleItem"
     :rows="props.singleItems || []"
     :columns="columns"
-    row-key="idSingleItem"
     :loading="props.isLoading"
     :pagination="{ rowsPerPage: 20 }"
+    flat
+    bordered
+    grid
+    @row-click="onRowClick"
   />
 </template>
