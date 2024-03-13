@@ -176,13 +176,16 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 
-import { useLogoutUser } from 'src/modules/auth/composables/login.composable'
 import { useRouter } from 'vue-router'
 import { useRouteStore } from 'src/stores/routes-store'
+import { useAuthStore } from 'src/stores/auth-store'
+import { LocalStorage } from 'quasar'
+import { api } from 'src/api'
 
 const routeStore = useRouteStore()
 
 const router = useRouter()
+const { setToken } = useAuthStore()
 
 const leftDrawerOpen = ref<boolean>(false)
 
@@ -191,8 +194,12 @@ function toggleLeftDrawer() {
 }
 
 function logout() {
-  useLogoutUser()
   router.replace({ name: 'login' })
+
+  LocalStorage.remove('token')
+  api.defaults.headers.common['Authorization'] = ''
+
+  setToken('')
 }
 </script>
 

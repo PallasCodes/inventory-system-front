@@ -118,7 +118,7 @@ async function getItems() {
         </template>
       </q-input>
     </div>
-    <div class="col-auto q-mt-sm">
+    <div class="col-auto">
       <q-select
         borderless
         v-model="filteredCategories"

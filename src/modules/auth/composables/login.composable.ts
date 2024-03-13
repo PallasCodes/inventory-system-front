@@ -1,8 +1,10 @@
 import { Loading, LocalStorage, Notify } from 'quasar'
 import { api } from 'src/api'
+import route from 'src/router'
 import { AuthService } from 'src/api/auth.api'
 import { useAuthStore } from 'src/stores/auth-store'
 import { handleRequest } from 'src/utils/handleRequest'
+import { useRoute, useRouter } from 'vue-router'
 
 export const useLoginUser = async (email: string, password: string): Promise<boolean> => {
   try {
@@ -48,6 +50,9 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
 }
 
 export const useLogoutUser = () => {
+  const router = useRouter()
+  router.replace({ name: 'login' })
+
   LocalStorage.remove('token')
   api.defaults.headers.common['Authorization'] = ''
 
