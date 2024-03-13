@@ -18,6 +18,7 @@ export default boot(async () => {
     const { setToken } = useAuthStore()
     setToken(token as string)
   } catch (error) {
+    Loading.hide()
     console.log(error)
   }
 })
