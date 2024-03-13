@@ -1,4 +1,4 @@
-import { Notify } from 'quasar'
+import { Notify, Dialog } from 'quasar'
 
 export enum MessageComponent {
   DIALOG = 'dialog',
@@ -14,25 +14,26 @@ export enum MessageType {
 }
 
 const MessageColor = {
-  success: '#43A047',
-  error: '#D50000',
-  warning: '#F18504',
-  info: '#757575',
-  question: '#3F8A67',
+  success: 'positive', //'#43A047'
+  error: 'negative', // '#D50000'
+  warning: 'warning', // #F18504
+  info: 'info', // #757575
+  question: 'secondary',
 }
 
 const MessageIcon = {
-  success: 'check',
-  error: 'times',
-  warning: 'alert-circle-outline',
-  info: 'information-outline',
-  question: 'help-circle-outline',
+  success: 'check_circle_outline',
+  error: 'error_outline',
+  warning: 'warning_amber',
+  info: 'info',
+  question: 'help_outline',
 }
 
 interface DestructuredMessageOpts {
   component: MessageComponent
   message: string
   type: MessageType
+  dialogTitle?: string
 }
 
 export class Message {
@@ -41,6 +42,7 @@ export class Message {
   color: string
   icon: string
   message: string
+  dialogTitle?: string
 
   constructor(opts: DestructuredMessageOpts) {
     this.component = opts.component
@@ -48,14 +50,19 @@ export class Message {
     this.icon = MessageIcon[opts.type]
     this.message = opts.message
     this.type = opts.type
+    this.dialogTitle = opts.dialogTitle
   }
 
   display() {
-    Notify.create({
-      color: this.color,
-      textColor: 'white',
-      icon: this.icon,
-      message: this.message,
-    })
+    if (this.component === MessageComponent.DIALOG) {
+      Dialog.create({ title: this.dialogTitle, message: this.message })
+    } else {
+      Notify.create({
+        color: this.color,
+        textColor: 'white',
+        icon: this.icon,
+        message: this.message,
+      })
+    }
   }
 }

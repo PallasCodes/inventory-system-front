@@ -34,25 +34,20 @@ const registerCategory = async () => {
   formPayload.append('key', '984cd4fb80b1dece88ef94d4ab376823')
 
   try {
-    const { data } = await makeAPICall({
+    const { data: apiData } = await makeAPICall({
       image: formData.value.imgFile,
       name: 'category_' + formData.value.name,
     })
 
-    formData.value.imgUrl = data.data.thumb.url
+    formData.value.imgUrl = apiData.data.thumb.url
     delete formData.value.imgFile
 
-    await handleRequest(CategoryService.create, formData.value)
+    const { error, message } = await handleRequest(CategoryService.create, formData.value)
 
     Loading.hide()
+    message?.display()
 
-    $q.notify({
-      color: 'green',
-      textColor: 'white',
-      icon: 'check',
-      message: 'Categoría registrada con éxito',
-    })
-    router.replace({ name: 'categories' })
+    if (!error) router.replace({ name: 'categories' })
   } catch (error) {
     console.log(error)
   }

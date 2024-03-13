@@ -77,6 +77,7 @@ function handleRequestError(error: any) {
   const message = new Message({
     component: MessageComponent.DIALOG,
     message: 'Ocurrió un error, inténtalo más tarde',
+    dialogTitle: 'Error',
     type: MessageType.ERROR,
   })
 
