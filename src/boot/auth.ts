@@ -1,4 +1,4 @@
-import { LocalStorage } from 'quasar'
+import { Loading, LocalStorage } from 'quasar'
 import { boot } from 'quasar/wrappers'
 
 import { api } from 'src/api'
@@ -11,7 +11,9 @@ export default boot(async () => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
   try {
+    Loading.show()
     await api.post('/auth/check-status')
+    Loading.hide()
 
     const { setToken } = useAuthStore()
     setToken(token as string)
