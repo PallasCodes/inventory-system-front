@@ -1,33 +1,23 @@
 <script setup lang="ts">
 import SingleItemsStore from '../stores/single-item-store'
 
-export interface SingleItemStatus {
-  idSingleItemStatus: string
-  nombre: string
-}
-
 interface Props {
   singleItemsAmount: number
-  singleItemStatusesCatalog: SingleItemStatus[]
+  singleItemStatusCatalog: Array<{ idSingleItemStatus: number; name: string }>
 }
 
 const props = defineProps<Props>()
 </script>
 
 <template>
-  <q-list bordered class="q-pa-sm">
-    <q-item
-      v-for="item in props.singleItemsAmount"
-      :key="item"
-      class="q-pa-sm"
-      :class="item > 1 ? 'q-mt-md' : null"
-    >
-      <q-item-section>
-        <div>
-          <div class="col-12">
+  <q-list>
+    <q-item v-for="item in props.singleItemsAmount" :key="item" class="q-px-sm">
+      <q-item-section class="q-py-sm">
+        <div class="row items-center q-gutter-x-lg dense">
+          <div class="col-2">
             <span class="d-block text-subtitle2">Pieza {{ item }}</span>
           </div>
-          <div class="col-12">
+          <div class="col">
             <q-input
               type="textarea"
               v-model="SingleItemsStore.store[item - 1].comments"
@@ -35,21 +25,25 @@ const props = defineProps<Props>()
               autogrow
             />
           </div>
-          <div class="col-12">
+          <div class="col-auto">
             <q-select
               v-model="SingleItemsStore.store[item - 1].singleItemStatus"
-              :options="singleItemStatusesCatalog"
+              :options="singleItemStatusCatalog"
               label="Estado"
               option-value="idSingleItemStatus"
               option-label="name"
             />
           </div>
-          <div class="col-12">
+          <div class="col-auto">
             <q-file
               v-model="SingleItemsStore.store[item - 1].image"
               label="Imagen"
               accept=".jpg, .png, .jpeg, image/*"
-            />
+            >
+              <template v-slot:append>
+                <q-icon size="sm" name="image" />
+              </template>
+            </q-file>
           </div>
         </div>
       </q-item-section>

@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import { uid } from 'quasar'
+import { SingleItemStatusEnum } from '../interfaces/SingleItemStatus.catalog'
 
 export interface SingleItem {
   tempId: string
@@ -12,7 +13,7 @@ export interface SingleItem {
 const store = reactive<SingleItem[]>([
   {
     tempId: uid(),
-    singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' },
+    singleItemStatus: SingleItemStatusEnum.AVAILABLE,
     comments: '',
     image: null,
   },
@@ -33,7 +34,7 @@ function updateStore(singleItemsAmount: number) {
       () => {
         return {
           tempId: uid(),
-          singleItemStatus: { idSingleItemStatus: 1, name: 'Disponible' },
+          singleItemStatus: SingleItemStatusEnum.AVAILABLE,
           comments: '',
           image: null,
         }

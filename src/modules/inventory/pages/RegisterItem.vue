@@ -7,11 +7,11 @@ import { Category } from '../interfaces/Category'
 import SingleItemStore, { SingleItem } from '../stores/single-item-store'
 import { CategoryService } from 'src/api/category.api'
 import { ItemService } from 'src/api/item.api'
-import { ItemCatalogsService } from 'src/api/item-catalogs.api'
+import { SingleItemStatusCatalog } from '../interfaces/SingleItemStatus.catalog'
 import { notEmpty, notEmptyNumber } from 'src/utils/formValidations'
 import { handleRequest } from 'src/utils/handleRequest'
 
-import SingleItemsList, { SingleItemStatus } from '../components/SingleItemsList.vue'
+import SingleItemsList from '../components/SingleItemsList.vue'
 import { makeAPICall } from 'src/utils/imgBb'
 
 // TODO: add autocomplete for categories
@@ -21,16 +21,10 @@ const $q = useQuasar()
 const router = useRouter()
 
 const categories = ref<Category[]>([])
-const singleItemsStatusesCatalog = ref<SingleItemStatus[]>([])
 
 onMounted(async () => {
   const { data: categoriesData } = await handleRequest(CategoryService.findAll)
   categories.value = categoriesData as Category[]
-
-  const { data: singleItemStausesData } = await handleRequest(
-    ItemCatalogsService.getSingleItemStatuses,
-  )
-  singleItemsStatusesCatalog.value = singleItemStausesData as SingleItemStatus[]
 })
 
 /* ================= FORM ================= */
@@ -107,85 +101,83 @@ const stepper = ref<QStepper>()
 </script>
 
 <template>
-  <q-page class="q-mx-lg q-py-md">
-    <div class="row">
-      <div class="col-12 col-sm-8 col-md-6 col-lg-4">
-        <q-stepper v-model="step" animated ref="stepper">
-          <q-step :name="1" :done="step > 1" title="Registrar Modelo">
-            <q-form ref="form1">
-              <div class="row q-gutter-sm">
-                <div class="col-12">
-                  <q-input
-                    v-model="formData.name"
-                    type="text"
-                    label="Nombre*"
-                    @update:model-value="SingleItemStore.setItemName"
-                    :rules="[notEmpty]"
-                  />
-                </div>
-                <div class="col-12">
-                  <q-input
-                    v-model="formData.description"
-                    type="textarea"
-                    label="Descripción"
-                    autogrow
-                    :rows="3"
-                  ></q-input>
-                </div>
-                <div class="col-12">
-                  <q-select
-                    v-model="formData.categoriesIds"
-                    :options="categories"
-                    label="Categorías*"
-                    multiple
-                    use-chips
-                    option-value="id"
-                    option-label="name"
-                    :rules="[notEmpty]"
-                  ></q-select>
-                </div>
-                <div class="col-12">
-                  <q-input
-                    type="number"
-                    v-model.number.lazy="formData.amount"
-                    min="1"
-                    max="20"
-                    label="Num. de items*"
-                    @update:model-value="SingleItemStore.updateStore"
-                    :rules="[notEmptyNumber]"
-                  />
-                </div>
-              </div>
-            </q-form>
-          </q-step>
-          <q-step :name="2" :done="step > 2" title="Registrar Items">
-            <single-items-list
-              :single-items-amount="formData.amount"
-              :single-item-statuses-catalog="singleItemsStatusesCatalog"
-            />
-          </q-step>
-          <template v-slot:navigation>
-            <q-stepper-navigation>
-              <q-btn v-if="step < 2" color="primary" @click="onClickNext"
-                >Siguiente</q-btn
-              >
-              <q-btn v-if="step > 1" color="primary" @click="stepper?.previous()"
-                >Anterior</q-btn
-              >
-              <q-btn
-                v-if="step === 2"
-                color="green"
-                type="submit"
-                class="q-ml-sm"
-                @click="onSubmit"
-                >Registrar</q-btn
-              >
-            </q-stepper-navigation>
-          </template>
-        </q-stepper>
-      </div>
-    </div>
-  </q-page>
+  <div style="max-width: 800px">
+    <q-stepper v-model="step" animated ref="stepper">
+      <q-step :name="1" :done="step > 1" title="Registrar Modelo">
+        <q-form ref="form1">
+          <div class="row q-gutter-sm">
+            <div class="col-12">
+              <q-input
+                v-model="formData.name"
+                type="text"
+                label="Nombre*"
+                @update:model-value="SingleItemStore.setItemName"
+                :rules="[notEmpty]"
+                style="max-width: 300px"
+              />
+            </div>
+            <div class="col-12">
+              <q-input
+                v-model="formData.description"
+                type="textarea"
+                label="Descripción"
+                autogrow
+                :rows="3"
+                style="max-width: 300px"
+              ></q-input>
+            </div>
+            <div class="col-12">
+              <q-select
+                v-model="formData.categoriesIds"
+                :options="categories"
+                label="Categorías*"
+                multiple
+                use-chips
+                option-value="id"
+                option-label="name"
+                :rules="[notEmpty]"
+                style="max-width: 300px"
+              ></q-select>
+            </div>
+            <div class="col-12">
+              <q-input
+                type="number"
+                v-model.number.lazy="formData.amount"
+                min="1"
+                max="20"
+                label="Num. de items*"
+                @update:model-value="SingleItemStore.updateStore"
+                :rules="[notEmptyNumber]"
+                style="max-width: 300px"
+              />
+            </div>
+          </div>
+        </q-form>
+      </q-step>
+      <q-step :name="2" :done="step > 2" title="Registrar Items">
+        <single-items-list
+          :single-items-amount="formData.amount"
+          :single-item-status-catalog="SingleItemStatusCatalog"
+        />
+      </q-step>
+      <template v-slot:navigation>
+        <q-stepper-navigation>
+          <q-btn v-if="step < 2" color="primary" @click="onClickNext">Siguiente</q-btn>
+          <q-btn v-if="step > 1" color="primary" @click="stepper?.previous()"
+            >Anterior</q-btn
+          >
+          <q-btn
+            v-if="step === 2"
+            color="green"
+            type="submit"
+            class="q-ml-sm"
+            @click="onSubmit"
+            >Registrar</q-btn
+          >
+        </q-stepper-navigation>
+      </template>
+    </q-stepper>
+  </div>
 </template>
 
 <style>
