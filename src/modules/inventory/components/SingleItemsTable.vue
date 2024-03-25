@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { QTable, QTableProps } from 'quasar'
+import BorrowingHistoryDialog from '../components/BorrowingsHistoryDialog.vue'
+import { ref } from 'vue'
 
 export interface SingleItemTable {
   sku: string
@@ -23,7 +25,6 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     sortable: true,
     field: (row) => row.sku,
-    style: 'min-width: 200px',
   },
   {
     name: 'comments',
@@ -43,8 +44,14 @@ const columns: QTableProps['columns'] = [
   },
 ]
 
-function onRowClick(...args: any) {
-  console.log(args)
+const isDialogActive = ref<boolean>(false)
+
+const dialog = ref()
+
+function onRowClick(e: Event, item: SingleItemTable) {
+  console.log(item.sku)
+  isDialogActive.value = true
+  dialog.value.getData(item.sku)
 }
 </script>
 
@@ -61,4 +68,6 @@ function onRowClick(...args: any) {
     grid
     @row-click="onRowClick"
   />
+
+  <BorrowingHistoryDialog v-model="isDialogActive" ref="dialog" />
 </template>

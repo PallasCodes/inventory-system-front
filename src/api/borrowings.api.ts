@@ -17,4 +17,7 @@ export const BorrowingsService = {
   registerReturn(payload: RegisterReturnForm) {
     return api.post(`${BASE_URL}/register-return`, payload)
   },
+  getBorrowingsHistory(sku: string) {
+    return api.get(`${BASE_URL}/borrowings-history/${sku}`)
+  },
 }

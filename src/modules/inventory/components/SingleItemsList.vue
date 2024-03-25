@@ -13,11 +13,11 @@ const props = defineProps<Props>()
   <q-list>
     <q-item v-for="item in props.singleItemsAmount" :key="item" class="q-px-sm">
       <q-item-section class="q-py-sm">
-        <div class="row items-center q-gutter-x-lg dense">
-          <div class="col-2">
+        <div class="row items-center q-col-gutter-x-lg dense">
+          <div class="col-12 col-sm-2">
             <span class="d-block text-subtitle2">Pieza {{ item }}</span>
           </div>
-          <div class="col">
+          <div class="col-12 col-sm-4">
             <q-input
               type="textarea"
               v-model="SingleItemsStore.store[item - 1].comments"
@@ -25,7 +25,7 @@ const props = defineProps<Props>()
               autogrow
             />
           </div>
-          <div class="col-auto">
+          <div class="col-6 col-sm-3">
             <q-select
               v-model="SingleItemsStore.store[item - 1].singleItemStatus"
               :options="singleItemStatusCatalog"
@@ -34,7 +34,7 @@ const props = defineProps<Props>()
               option-label="name"
             />
           </div>
-          <div class="col-auto">
+          <div class="col-6 col-sm-3">
             <q-file
               v-model="SingleItemsStore.store[item - 1].image"
               label="Imagen"

@@ -31,9 +31,9 @@ onMounted(async () => {
 interface FormData {
   name: string | null
   description?: string | null
-  // imgFiles: []
   categoriesIds: { idCategory: string; name: string }[]
   amount: number
+  registerSIDetails: boolean
 }
 
 const formData = ref<FormData>({
@@ -41,6 +41,7 @@ const formData = ref<FormData>({
   description: null,
   categoriesIds: [],
   amount: 1,
+  registerSIDetails: true,
 })
 
 const form1 = ref<QForm>()
@@ -149,6 +150,13 @@ const stepper = ref<QStepper>()
                 @update:model-value="SingleItemStore.updateStore"
                 :rules="[notEmptyNumber]"
                 style="max-width: 300px"
+              />
+            </div>
+            <div class="col-12">
+              <q-checkbox
+                v-model="formData.registerSIDetails"
+                label="Registrar detalles de cada item"
+                style="max-width: 300px; color: #00000099"
               />
             </div>
           </div>

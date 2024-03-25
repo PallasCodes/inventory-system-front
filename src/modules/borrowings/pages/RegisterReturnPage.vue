@@ -40,7 +40,7 @@ onMounted(async () => {
 async function onSubmit() {
   Loading.show()
 
-  const { data, message, error } = await handleRequest(
+  const { message, error } = await handleRequest(
     BorrowingsService.registerReturn,
     formData.value,
   )
@@ -77,11 +77,14 @@ async function onSubmit() {
           <div class="col-12">
             <q-select
               v-model="formData.idBorrowing"
-              label="Pieza a retornar*"
+              label="Item a retornar*"
               :rules="[notEmpty]"
               :options="dueBorrowings"
               option-value="idBorrowing"
-              :option-label="(i) => i.singleItem.sku"
+              :option-label="
+                (i) =>
+                  `${i.singleItem.sku} - ${i.singleItem.item.name} - ${i.employee.fullName}`
+              "
               emit-value
               map-options
             />
