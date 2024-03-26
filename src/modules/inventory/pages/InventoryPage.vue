@@ -152,7 +152,7 @@ async function getItems() {
   </div>
 
   <div class="row q-mt-lg">
-    <div class="auto">
+    <div class="col-12">
       <SingleItemsTable
         :single-items="singleItems"
         :is-loading="isTableDataLoading"

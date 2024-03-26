@@ -5,25 +5,16 @@ import { formatters } from 'src/utils/formatters'
 import { handleRequest } from 'src/utils/handleRequest'
 import { defineModel, ref } from 'vue'
 
+interface Props {
+  itemModel: string
+  sku: string
+}
+
+const props = defineProps<Props>()
+
 const model = defineModel<boolean>()
 
 const columns: QTableProps['columns'] = [
-  {
-    name: 'item',
-    label: 'Modelo',
-    required: true,
-    align: 'left',
-    sortable: true,
-    field: (row) => row.singleItem.item.name,
-  },
-  {
-    name: 'singleItem',
-    label: 'Item',
-    required: true,
-    align: 'left',
-    sortable: true,
-    field: (row) => row.singleItem.sku,
-  },
   {
     name: 'borrowingDate',
     label: 'Fecha prestamo',
@@ -55,6 +46,22 @@ const columns: QTableProps['columns'] = [
     align: 'left',
     sortable: true,
     field: (row) => row.employee.fullName,
+  },
+  {
+    name: 'department',
+    label: 'Departamento',
+    required: true,
+    align: 'left',
+    sortable: true,
+    field: (row) => row.employee.department.name,
+  },
+  {
+    name: 'branch',
+    label: 'Sucursal',
+    required: true,
+    align: 'left',
+    sortable: true,
+    field: (row) => row.employee.department.branch.name,
   },
   {
     name: 'comments',
@@ -95,7 +102,9 @@ defineExpose({ getData })
   <q-dialog v-model="model">
     <q-card class="col-12 q-px-sm">
       <q-card-section>
-        <div class="text-h6">Historial de prestamos</div>
+        <div class="text-h6">
+          {{ `Historial de prestamos - ${props.itemModel} - ${props.sku}` }}
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">

@@ -20,7 +20,7 @@ const props = defineProps<Props>()
 const columns: QTableProps['columns'] = [
   {
     name: 'name',
-    label: 'Nombre',
+    label: 'Modelo',
     required: true,
     align: 'left',
     sortable: true,
@@ -29,7 +29,7 @@ const columns: QTableProps['columns'] = [
   },
   {
     name: 'numTotalItems',
-    label: 'Piezas',
+    label: 'Items',
     required: false,
     align: 'left',
     sortable: true,
@@ -54,6 +54,14 @@ const columns: QTableProps['columns'] = [
   {
     name: 'numUnavailableItems',
     label: 'No disponibles',
+    required: false,
+    align: 'left',
+    sortable: true,
+    field: (row) => row.numTotalItems - row.numAvailableItems,
+  },
+  {
+    name: 'numUnavailableItems',
+    label: 'En reparación',
     required: false,
     align: 'left',
     sortable: true,
