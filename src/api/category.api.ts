@@ -13,4 +13,7 @@ export const CategoryService = {
   findOneById(id: string) {
     return api.get(`${BASE_URL}/${id}`)
   },
+  delete(id: string) {
+    return api.delete(`${BASE_URL}/${id}`)
+  },
 }

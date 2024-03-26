@@ -57,6 +57,12 @@ const changeCategoriesSort = () => {
     })
   }
 }
+
+function onCategoryDelete(id: string) {
+  categories.value = categories.value?.filter(
+    (category: Category) => category.idCategory !== id,
+  )
+}
 </script>
 
 <template>
@@ -90,6 +96,10 @@ const changeCategoriesSort = () => {
       </div>
     </div>
 
-    <categories-list :categories="categories || []" class="q-mt-sm" />
+    <categories-list
+      :categories="categories || []"
+      class="q-mt-sm"
+      @on-delete="onCategoryDelete"
+    />
   </q-page>
 </template>

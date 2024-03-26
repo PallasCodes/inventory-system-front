@@ -3,11 +3,17 @@ import { Category } from '../interfaces/Category'
 
 import CategoryCard from './CategoryCard.vue'
 
+const emit = defineEmits(['onDelete'])
+
 interface Props {
   categories: Category[]
 }
 
 const props = defineProps<Props>()
+
+function onDeleteCategory(id: string) {
+  emit('onDelete', id)
+}
 </script>
 
 <template>
@@ -17,7 +23,7 @@ const props = defineProps<Props>()
       v-for="category in props.categories"
       :key="category.idCategory"
     >
-      <category-card :category="category" />
+      <category-card :category="category" @on-delete="onDeleteCategory" />
     </div>
     <div class="col-12">
       <span v-if="categories.length === 0" class="font-weight-medium"

@@ -60,7 +60,6 @@ const sku = ref<string>('')
 
 function onRowClick(row: SingleItemTable) {
   sku.value = row.sku
-  console.log(row)
   isDialogActive.value = true
   dialog.value.getData(row.sku)
 }
@@ -80,12 +79,18 @@ function onRowClick(row: SingleItemTable) {
   >
     <template #item="props">
       <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
-        <q-card bordered flat style="cursor: pointer" @click="onRowClick(props.row)">
+        <q-card
+          bordered
+          flat
+          style="cursor: pointer"
+          @click="onRowClick(props.row)"
+          class="card"
+        >
           <q-card-section>
             <q-img
               :src="
-                props.imgUrl
-                  ? props.imgUrl
+                props.row.imgUrl
+                  ? props.row.imgUrl
                   : 'https://static.thenounproject.com/png/4693713-200.png'
               "
             />
@@ -114,3 +119,9 @@ function onRowClick(row: SingleItemTable) {
     :sku="sku"
   />
 </template>
+
+<style>
+.card:hover {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+</style>

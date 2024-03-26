@@ -1,11 +1,36 @@
 <script setup lang="ts">
+import { handleRequest } from 'src/utils/handleRequest'
 import { Category } from '../interfaces/Category'
+import { CategoryService } from 'src/api/category.api'
+import { Loading } from 'quasar'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
+import { ref } from 'vue'
 
 interface Props {
   category: Category
 }
 
 const props = defineProps<Props>()
+
+const emit = defineEmits(['onDelete'])
+
+const dialogDelete = ref<boolean>(false)
+
+async function onDeleteCategory() {
+  Loading.show()
+
+  const { message, error } = await handleRequest(
+    CategoryService.delete,
+    props.category.idCategory,
+  )
+
+  Loading.hide()
+
+  message?.display()
+  if (!error) {
+    emit('onDelete', props.category.idCategory)
+  }
+}
 </script>
 
 <template>
@@ -22,7 +47,7 @@ const props = defineProps<Props>()
             <q-menu cover auto-close>
               <q-list>
                 <q-item clickable>
-                  <q-item-section>Eliminar</q-item-section>
+                  <q-item-section @click="dialogDelete = true">Eliminar</q-item-section>
                 </q-item>
                 <q-item clickable>
                   <q-item-section>Editar</q-item-section>
@@ -52,4 +77,10 @@ const props = defineProps<Props>()
       />
     </router-link>
   </q-card>
+
+  <DeleteDialog
+    title="¿Desea eliminar la categoría?"
+    v-model="dialogDelete"
+    @on-delete="onDeleteCategory"
+  />
 </template>
