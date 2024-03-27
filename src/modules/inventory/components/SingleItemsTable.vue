@@ -35,14 +35,6 @@ const columns: QTableProps['columns'] = [
     field: (row) => row.singleItemStatus?.name,
   },
   {
-    name: 'imgUrl',
-    label: 'Imagen',
-    required: false,
-    align: 'left',
-    sortable: false,
-    field: 'imgUrl',
-  },
-  {
     name: 'comments',
     label: 'Comentarios',
     required: false,
@@ -57,12 +49,15 @@ const isDialogActive = ref<boolean>(false)
 const dialog = ref()
 
 const sku = ref<string>('')
+const showGrid = ref<boolean>(true)
 
-function onRowClick(row: SingleItemTable) {
+function onRowClick(e: any, row: SingleItemTable) {
   sku.value = row.sku
   isDialogActive.value = true
   dialog.value.getData(row.sku)
 }
+
+const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
 </script>
 
 <template>
@@ -75,38 +70,75 @@ function onRowClick(row: SingleItemTable) {
     :pagination="{ rowsPerPage: 18 }"
     flat
     bordered
-    grid
+    :grid="showGrid"
+    @row-click="onRowClick"
   >
+    <template #top-right>
+      <span class="q-mr-sm">Mostrar Items en:</span>
+      <q-btn-group flat push>
+        <q-btn
+          size="xs"
+          :color="showGrid ? 'primary' : 'white'"
+          :text-color="showGrid ? 'white' : 'black'"
+          @click="showGrid = true"
+        >
+          <q-icon name="grid_view" />
+          <q-tooltip
+            anchor="top middle"
+            self="bottom middle"
+            :offset="[10, 10]"
+            top
+            style="font-size: 12px"
+          >
+            Cuadrícula
+          </q-tooltip>
+        </q-btn>
+        <q-btn
+          size="xs"
+          :color="showGrid ? 'white' : 'primary'"
+          :text-color="showGrid ? 'black' : 'white'"
+          @click="showGrid = false"
+        >
+          <q-icon name="table_rows" />
+          <q-tooltip
+            anchor="top middle"
+            self="bottom middle"
+            :offset="[10, 10]"
+            top
+            style="font-size: 12px"
+          >
+            Tabla
+          </q-tooltip>
+        </q-btn>
+      </q-btn-group>
+    </template>
+
     <template #item="props">
       <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
         <q-card
           bordered
           flat
           style="cursor: pointer"
-          @click="onRowClick(props.row)"
+          @click="onRowClick(null, props.row)"
           class="card"
         >
           <q-card-section>
-            <q-img
-              :src="
-                props.row.imgUrl
-                  ? props.row.imgUrl
-                  : 'https://static.thenounproject.com/png/4693713-200.png'
-              "
-            />
+            <span class="block text-subtitle2">{{ props.row.sku }}</span>
+            <q-chip
+              size="12px"
+              outline
+              style="font-weight: 500"
+              :color="colors[props.row.singleItemStatus.idSingleItemStatus - 1]"
+              class="q-mt-sm"
+              >{{ props.row.singleItemStatus?.name }}</q-chip
+            >
+            <q-img :src="props.row.imgUrl ? props.row.imgUrl : 'noImg.png'" />
           </q-card-section>
 
-          <q-list dense>
-            <q-item
-              v-for="col in props.cols.filter((col: any) => col.name !== 'imgUrl')"
-              :key="col.name"
-            >
-              <q-item-section>
-                <q-item-label>{{ col.label }}</q-item-label>
-                <q-item-label caption lines="2">{{ col.value }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <q-card-section class="q-pt-none q-mt-none" v-if="props.row.comments">
+            <span class="block" style="font-weight: 500">Comentarios</span>
+            <span class="block text-body2">{{ props.row.comments }}</span>
+          </q-card-section>
         </q-card>
       </div>
     </template>

@@ -6,8 +6,10 @@ import { useRouter } from 'vue-router'
 import { CategoryService } from 'src/api/category.api'
 import { handleRequest } from 'src/utils/handleRequest'
 import { makeAPICall } from 'src/utils/imgBb'
+import { notEmpty } from 'src/utils/formValidations'
 
 const $q = useQuasar()
+
 const router = useRouter()
 
 interface RegisterCategoryForm {
@@ -24,9 +26,7 @@ const formData = ref<RegisterCategoryForm>({
   imgUrl: null,
 })
 
-const registerCategory = async () => {
-  Loading.show()
-
+async function getImgUrl(): Promise<string> {
   const formPayload = new FormData()
 
   formPayload.append('name', 'category_' + formData.value.name)
@@ -34,23 +34,46 @@ const registerCategory = async () => {
   formPayload.append('key', '984cd4fb80b1dece88ef94d4ab376823')
 
   try {
-    const { data: apiData } = await makeAPICall({
+    const { data } = await makeAPICall({
       image: formData.value.imgFile,
       name: 'category_' + formData.value.name,
     })
 
-    formData.value.imgUrl = apiData.data.thumb.url
-    delete formData.value.imgFile
-
-    const { error, message } = await handleRequest(CategoryService.create, formData.value)
-
-    Loading.hide()
-    message?.display()
-
-    if (!error) router.replace({ name: 'categories' })
+    return data.data.thumb.url
   } catch (error) {
     console.log(error)
+    return 'error'
   }
+}
+
+const registerCategory = async () => {
+  Loading.show()
+
+  if (formData.value.imgFile) {
+    const imgUrl = await getImgUrl()
+
+    if (imgUrl === 'error') {
+      $q.dialog({
+        title: 'Ocurrió un error al registrar la categoría. Inténtalo más tarde',
+        color: 'negative',
+      })
+
+      delete formData.value.imgUrl
+    } else {
+      formData.value.imgUrl = imgUrl
+    }
+  } else {
+    delete formData.value.imgUrl
+  }
+
+  delete formData.value.imgFile
+
+  const { error, message } = await handleRequest(CategoryService.create, formData.value)
+
+  Loading.hide()
+  message?.display()
+
+  if (!error) router.replace({ name: 'categories' })
 
   // TODO: use env var for key
 }
@@ -70,7 +93,12 @@ const registerCategory = async () => {
               >
             </div>
             <div class="col-12">
-              <q-input v-model="formData.name" type="text" label="Nombre" />
+              <q-input
+                v-model="formData.name"
+                type="text"
+                label="Nombre*"
+                :rules="[notEmpty]"
+              />
             </div>
             <div class="col-12">
               <q-input

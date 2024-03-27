@@ -66,7 +66,7 @@ async function onDeleteCategory() {
       round
     >
       <img
-        :src="category.imgUrl"
+        :src="category.imgUrl ? category.imgUrl : 'noImg.png'"
         style="
           width: 100%;
           height: auto;
