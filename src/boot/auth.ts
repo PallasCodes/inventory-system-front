@@ -11,7 +11,10 @@ export default boot(async () => {
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
   try {
-    Loading.show()
+    Loading.show({
+      message: 'Espere un momento. El sistema está cargando.',
+      spinnerColor: 'primary',
+    })
     await api.post('/auth/check-status')
     Loading.hide()
 

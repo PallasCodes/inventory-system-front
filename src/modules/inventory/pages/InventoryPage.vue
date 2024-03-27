@@ -23,14 +23,14 @@ const itemCards = ref<ItemCard[]>([
   },
   {
     amount: 0,
-    color: 'green',
+    color: 'positive',
     icon: 'check',
     description: 'Items disponibles',
     name: 'available',
   },
   {
     amount: 0,
-    color: 'red',
+    color: 'negative',
     icon: 'close',
     description: 'Items no disponibles',
     name: 'not_available',
@@ -152,12 +152,10 @@ async function getItems() {
   </div>
 
   <div class="row q-mt-lg">
-    <div class="col-12">
-      <SingleItemsTable
-        :single-items="singleItems"
-        :is-loading="isTableDataLoading"
-        :item-name="selectedItemName"
-      />
-    </div>
+    <SingleItemsTable
+      :single-items="singleItems"
+      :is-loading="isTableDataLoading"
+      :item-name="selectedItemName"
+    />
   </div>
 </template>
