@@ -3,11 +3,12 @@ import { onMounted, ref } from 'vue'
 
 import { handleRequest } from 'src/utils/handleRequest'
 import { notEmpty, selectNotEmpty } from 'src/utils/formValidations'
-import { Loading, QForm, useQuasar } from 'quasar'
+import { Loading, QForm } from 'quasar'
 import { DepartmentService } from 'src/api/department.api'
 import { BranchService } from 'src/api/branch.api'
 import { Branch, Department } from '../interfaces'
 import { EmployeeService } from 'src/api/employee.api'
+import { useRouter } from 'vue-router'
 
 interface FormData {
   fullName: string
@@ -18,6 +19,8 @@ interface FormData {
 const branches = ref<Branch[]>()
 const departments = ref<Department[]>()
 
+const router = useRouter()
+
 const formData = ref<FormData>({
   fullName: '',
   branch: null,
@@ -25,14 +28,17 @@ const formData = ref<FormData>({
 })
 
 async function registerEmployee() {
-  const { data, message, error } = await handleRequest(EmployeeService.create, {
+  Loading.show()
+
+  const { message, error } = await handleRequest(EmployeeService.create, {
     fullName: formData.value.fullName,
     idDepartment: formData.value.department.idDepartment,
   })
 
-  if (!error) {
-    console.log(data)
-  }
+  Loading.hide()
+  message?.display()
+
+  if (!error) router.replace({ name: 'employees' })
 }
 
 onMounted(async () => {
@@ -40,12 +46,12 @@ onMounted(async () => {
 
   if (!error) {
     branches.value = data as Branch[]
+  } else {
+    message?.display()
   }
 })
 
 async function onSelectBranch() {
-  console.log('idbranch: ' + formData.value.branch?.idBranch)
-
   const { data, message, error } = await handleRequest(
     DepartmentService.findAllById,
     formData.value.branch?.idBranch,
@@ -53,6 +59,8 @@ async function onSelectBranch() {
 
   if (!error) {
     departments.value = data as Department[]
+  } else {
+    message?.display()
   }
 }
 </script>
