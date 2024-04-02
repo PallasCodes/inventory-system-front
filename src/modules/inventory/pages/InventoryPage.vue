@@ -9,10 +9,6 @@ import ItemsTable, { ItemTable } from '../components/ItemsTable.vue'
 import SingleItemsTable, { SingleItemTable } from '../components/SingleItemsTable.vue'
 import { Loading } from 'quasar'
 
-const search = ref<string>('')
-const filteredCategories = ref<string[]>([])
-const filteredStates = ref<string[]>([])
-
 const itemCards = ref<ItemCard[]>([
   {
     amount: 0,
@@ -101,61 +97,15 @@ async function getItems() {
 <template>
   <ItemsInfoCardsList :items-cards="itemCards" class="q-mb-xl" />
 
-  <div class="row">
-    <div class="col-auto">
-      <q-input
-        v-model="search"
-        type="search"
-        placeholder="Buscar item"
-        dense
-        standout
-        filled
-        style="font-size: 12px !important; width: 280px"
-        class="q-mr-xl"
-      >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-    </div>
-    <div class="col-auto">
-      <q-select
-        borderless
-        v-model="filteredCategories"
-        :options="[]"
-        label="Filtrar por estatus"
-        dense
-        style="width: 160px"
-        class="q-mr-lg"
-      />
-    </div>
-    <div class="col-auto">
-      <q-select
-        borderless
-        v-model="filteredStates"
-        :options="[]"
-        label="Filtrar por categoría"
-        dense
-        style="width: 160px"
-      />
-    </div>
-  </div>
+  <ItemsTable
+    :items="items"
+    :is-loading="isTableDataLoading"
+    @on-row-click="onClickRow"
+  />
 
-  <div class="row q-mt-lg">
-    <div class="col-auto">
-      <ItemsTable
-        :items="items"
-        :is-loading="isTableDataLoading"
-        @on-row-click="onClickRow"
-      />
-    </div>
-  </div>
-
-  <div class="row q-mt-lg">
-    <SingleItemsTable
-      :single-items="singleItems"
-      :is-loading="isTableDataLoading"
-      :item-name="selectedItemName"
-    />
-  </div>
+  <SingleItemsTable
+    :single-items="singleItems"
+    :is-loading="isTableDataLoading"
+    :item-name="selectedItemName"
+  />
 </template>
