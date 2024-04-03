@@ -136,7 +136,7 @@ onMounted(async () => {
         style="font-size: 12px !important; width: 280px"
         class="q-mr-xl"
       >
-        <template v-slot:append>
+        <template #append>
           <q-icon name="search" />
         </template>
       </q-input>

@@ -13,6 +13,7 @@ import { handleRequest } from 'src/utils/handleRequest'
 
 import SingleItemsList from '../components/SingleItemsList.vue'
 import { makeAPICall } from 'src/utils/imgBb'
+import { formatters } from 'src/utils/formatters'
 
 // TODO: add autocomplete for categories
 
@@ -47,10 +48,32 @@ const formData = ref<FormData>({
 const form1 = ref<QForm>()
 
 async function onClickNext() {
-  const validForm = await form1.value?.validate()
+  Loading.show()
 
-  if (validForm) stepper.value?.next()
+  const validForm = await form1.value?.validate()
+  if (!validForm) return
+
+  let auxSkuPrefix = formData.value.name
+    ?.replace(/\s+/g, '')
+    .substring(0, 3)
+    .toUpperCase()
+
+  const { data, message, error } = await handleRequest(
+    ItemService.generateSkuPrefix,
+    auxSkuPrefix,
+  )
+
+  Loading.hide()
+
+  if (error) {
+    message?.display()
+  } else {
+    skuPrefix.value = data.skuPrefix
+    stepper.value?.next()
+  }
 }
+
+const skuPrefix = ref<string>('')
 
 async function onSubmit() {
   Loading.show()
@@ -65,7 +88,6 @@ async function onSubmit() {
   SingleItemStore.store.forEach((sItem, i) => {
     if (sItem.image) {
       const imgUrl = responses.find((res) => (res.data.data.title = sItem.tempId))
-      console.log(imgUrl)
       SingleItemStore.store[i].imgUrl = imgUrl.data.data.thumb.url
     }
     delete SingleItemStore.store[i].image
@@ -73,11 +95,13 @@ async function onSubmit() {
 
   const payload = {
     ...formData.value,
+    skuPrefix: skuPrefix.value,
     categoriesIds: formData.value.categoriesIds.map((category) => category.idCategory),
-    singleItems: SingleItemStore.store.map((singleItem: SingleItem) => ({
+    singleItems: SingleItemStore.store.map((singleItem: SingleItem, i: number) => ({
       comments: singleItem.comments,
       idSingleItemStatus: singleItem.singleItemStatus.idSingleItemStatus,
       imgUrl: singleItem.imgUrl,
+      sku: skuPrefix.value + formatters.pad(i, 3),
     })),
   }
 
@@ -166,6 +190,7 @@ const stepper = ref<QStepper>()
         <single-items-list
           :single-items-amount="formData.amount"
           :single-item-status-catalog="SingleItemStatusCatalog"
+          :sku-prefix="skuPrefix"
         />
       </q-step>
       <template v-slot:navigation>

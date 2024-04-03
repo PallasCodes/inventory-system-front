@@ -10,6 +10,10 @@ export interface SingleItem {
   imgUrl?: string | null
 }
 
+const item = reactive({
+  name: '',
+})
+
 const store = reactive<SingleItem[]>([
   {
     tempId: uid(),
@@ -18,10 +22,6 @@ const store = reactive<SingleItem[]>([
     image: null,
   },
 ])
-
-const item = reactive({
-  name: '',
-})
 
 function setItemName(name: string) {
   item.name = name

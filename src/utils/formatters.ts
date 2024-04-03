@@ -5,4 +5,9 @@ export const formatters = {
   dateToString(date: Date) {
     return date ? date.toISOString().split('T')[0] : null
   },
+  pad(num: number, size: number) {
+    let auxNum = num.toString()
+    while (auxNum.length < size) auxNum = '0' + auxNum
+    return auxNum
+  },
 }

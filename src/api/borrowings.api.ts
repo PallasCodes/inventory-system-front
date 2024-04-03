@@ -20,4 +20,7 @@ export const BorrowingsService = {
   getBorrowingsHistory(sku: string) {
     return api.get(`${BASE_URL}/borrowings-history/${sku}`)
   },
+  cancelBorrowing(idBorrowing: string) {
+    return api.post(`${BASE_URL}/cancel/${idBorrowing}`)
+  },
 }

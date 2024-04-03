@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { formatters } from 'src/utils/formatters'
 import SingleItemsStore from '../stores/single-item-store'
 
 interface Props {
+  skuPrefix: string
   singleItemsAmount: number
   singleItemStatusCatalog: Array<{ idSingleItemStatus: number; name: string }>
 }
@@ -11,11 +13,13 @@ const props = defineProps<Props>()
 
 <template>
   <q-list>
-    <q-item v-for="item in props.singleItemsAmount" :key="item" class="q-px-sm">
+    <q-item v-for="(item, i) in props.singleItemsAmount" :key="item" class="q-px-sm">
       <q-item-section class="q-py-sm">
         <div class="row items-center q-col-gutter-x-lg dense">
           <div class="col-12 col-sm-2">
-            <span class="d-block text-subtitle2">Pieza {{ item }}</span>
+            <span class="d-block text-subtitle2"
+              >Item {{ skuPrefix + formatters.pad(i, 3) }}</span
+            >
           </div>
           <div class="col-12 col-sm-4">
             <q-input

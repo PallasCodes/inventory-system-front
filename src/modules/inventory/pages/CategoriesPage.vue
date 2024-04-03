@@ -66,40 +66,38 @@ function onCategoryDelete(id: string) {
 </script>
 
 <template>
-  <q-page class="q-py-md q-px-lg">
-    <span class="text-subtitle1 q-mb-lg block">Categorías registradas</span>
-    <div class="row items-center justify-between">
-      <div class="col-12 col-md-3">
-        <q-input
-          v-model="search"
-          type="search"
-          placeholder="Buscar categoría"
-          dense
-          standout
-          filled
-          style="font-size: 12px !important"
-        >
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
-      </div>
-      <div class="col-12 col-md-2">
-        <q-select
-          borderless
-          v-model="orderBy"
-          :options="orderOptions"
-          label="Ordenar por"
-          dense
-          @update:model-value="changeCategoriesSort"
-        />
-      </div>
+  <span class="text-subtitle1 q-mb-lg block">Categorías registradas</span>
+  <div class="row items-center justify-between">
+    <div class="col-12 col-md-3">
+      <q-input
+        v-model="search"
+        type="search"
+        placeholder="Buscar categoría"
+        dense
+        standout
+        filled
+        style="font-size: 12px !important"
+      >
+        <template v-slot:append>
+          <q-icon name="search" />
+        </template>
+      </q-input>
     </div>
+    <div class="col-12 col-md-2">
+      <q-select
+        borderless
+        v-model="orderBy"
+        :options="orderOptions"
+        label="Ordenar por"
+        dense
+        @update:model-value="changeCategoriesSort"
+      />
+    </div>
+  </div>
 
-    <categories-list
-      :categories="categories || []"
-      class="q-mt-sm"
-      @on-delete="onCategoryDelete"
-    />
-  </q-page>
+  <categories-list
+    :categories="categories || []"
+    class="q-mt-sm"
+    @on-delete="onCategoryDelete"
+  />
 </template>

@@ -7,6 +7,8 @@ import { BorrowingsService } from 'src/api/borrowings.api'
 import { formatters } from 'src/utils/formatters'
 import { CategoryService } from 'src/api/category.api'
 
+import BasicConfirmationDialog from 'src/components/BasicConfirmationDialog.vue'
+
 interface Employee {
   fullName: string
   idEmployee: string
@@ -42,7 +44,7 @@ export interface Item {
   categories: Category[]
 }
 
-interface ItemTable {
+interface Borrowing {
   borrowingDate: string
   borrowingDeadline?: string | null
   comments?: string | null
@@ -53,10 +55,20 @@ interface ItemTable {
   singleItem: SingleItem
 }
 
-const borrowings = ref<ItemTable[]>([])
-const tableData = ref<ItemTable[]>([])
+const dialogCancelReturn = ref<boolean>(false)
+
+const borrowings = ref<Borrowing[]>([])
+const tableData = ref<Borrowing[]>([])
 
 const columns: QTableProps['columns'] = [
+  {
+    name: 'actions',
+    label: 'Acciones',
+    required: false,
+    align: 'left',
+    sortable: false,
+    field: 'actions',
+  },
   {
     name: 'singleItem',
     label: 'Modelo',
@@ -67,7 +79,7 @@ const columns: QTableProps['columns'] = [
   },
   {
     name: 'categories',
-    label: 'Modelo',
+    label: 'Categorías',
     required: false,
     align: 'left',
     sortable: true,
@@ -177,7 +189,7 @@ const getItems = computed(() => {
   let items = tableData.value
 
   if (filteredCategories.value?.length > 0) {
-    items = items.filter((item: ItemTable) =>
+    items = items.filter((item: Borrowing) =>
       item.singleItem.item.categories.some((category: Category) =>
         filteredCategories.value.includes(category.idCategory),
       ),
@@ -185,16 +197,16 @@ const getItems = computed(() => {
   }
 
   if (filteredReturnedStatus.value === true) {
-    items = items.filter((item: ItemTable) => item.returned)
+    items = items.filter((item: Borrowing) => item.returned)
   }
 
   if (filteredReturnedStatus.value === false) {
-    items = items.filter((item: ItemTable) => !item.returned)
+    items = items.filter((item: Borrowing) => !item.returned)
   }
 
   if (search.value !== '') {
     if (typeOfSearch.value === 'employee') {
-      items = items.filter((item: ItemTable) =>
+      items = items.filter((item: Borrowing) =>
         item.employee.fullName
           .toLocaleLowerCase()
           .includes(search.value.toLocaleLowerCase()),
@@ -202,7 +214,7 @@ const getItems = computed(() => {
     }
 
     if (typeOfSearch.value === 'item') {
-      items = items.filter((item: ItemTable) =>
+      items = items.filter((item: Borrowing) =>
         item.singleItem.item.name
           .toLocaleLowerCase()
           .includes(search.value.toLocaleLowerCase()),
@@ -212,6 +224,34 @@ const getItems = computed(() => {
 
   return items
 })
+
+function onClickCancelReturn(row: any) {
+  borrowingToCancel.value = row
+  dialogCancelReturn.value = true
+}
+
+async function onConfirm() {
+  Loading.show()
+
+  const { data, message, error } = await handleRequest(
+    BorrowingsService.cancelBorrowing,
+    borrowingToCancel.value?.idBorrowing,
+  )
+
+  Loading.hide()
+  message?.display()
+
+  if (!error) {
+    dialogCancelReturn.value = false
+    const index = tableData.value.findIndex(
+      (borrowing: Borrowing) => borrowing.idBorrowing === data.idBorrowing,
+    )
+    tableData.value[index].returned = false
+    tableData.value[index].returnDate = null
+  }
+}
+
+const borrowingToCancel = ref<Borrowing>()
 </script>
 
 <template>
@@ -288,6 +328,28 @@ const getItems = computed(() => {
         :pagination="{ rowsPerPage: 20 }"
         row-key="idBorrowing"
       >
+        <template #body-cell-actions="{ row }">
+          <q-td>
+            <q-btn
+              v-if="row.returned"
+              flat
+              round
+              size="sm"
+              @click="onClickCancelReturn(row)"
+            >
+              <q-icon name="cancel" color="negative" />
+              <q-tooltip
+                anchor="top middle"
+                self="bottom middle"
+                :offset="[5, 5]"
+                top
+                style="font-size: 12px"
+              >
+                Cancelar entrega
+              </q-tooltip>
+            </q-btn>
+          </q-td>
+        </template>
         <template #body-cell-returned="{ value }">
           <q-td>
             <q-icon
@@ -301,6 +363,15 @@ const getItems = computed(() => {
       </q-table>
     </div>
   </div>
+
+  <BasicConfirmationDialog
+    v-model="dialogCancelReturn"
+    action-btn-color="negative"
+    action-btn-label="Cancelar entrega"
+    cancel-btn-label="Cerrar"
+    title="¿Desea cancelar la entrega del Item: ?"
+    @confirm="onConfirm"
+  />
 </template>
 
 <style>

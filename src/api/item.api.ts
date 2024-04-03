@@ -18,4 +18,7 @@ export const ItemService = {
   getItemsCount() {
     return api.get(`${BASE_URL}/counts`)
   },
+  generateSkuPrefix(skuPrefix: string) {
+    return api.post(`${BASE_URL}/generateSkuPrefix`, { skuPrefix })
+  },
 }

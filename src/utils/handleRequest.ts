@@ -52,7 +52,7 @@ export async function handleRequest(
 
     return responseObj
   } catch (error: AxiosError | any) {
-    console.log(error)
+    console.error(error)
 
     return {
       data: null,

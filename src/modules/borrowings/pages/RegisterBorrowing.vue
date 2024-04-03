@@ -63,8 +63,6 @@ async function getItemsCatalog() {
 async function onItemSelected(idItem: Item) {
   const { data, error, message } = await handleRequest(ItemService.findOneById, idItem)
 
-  console.log(data.singleItems)
-
   if (error) {
     message?.display()
   } else {
@@ -97,86 +95,82 @@ async function onClickRegister() {
 </script>
 
 <template>
-  <q-page class="q-mx-lg q-py-md">
-    <q-card style="max-width: 500px; width: 100%" class="q-pa-md">
-      <q-card-section>
-        <q-form @submit.prevent="onClickRegister">
-          <div class="row q-gutter-sm">
-            <div class="col-12">
-              <span
-                class="block text-subtitle2"
-                style="font-size: 16px !important; color: #222 !important"
-                >Registrar préstamo</span
-              >
-            </div>
-            <div class="col-12">
-              <q-input
-                v-model="formData.borrowingDate"
-                type="date"
-                label="Fecha del préstamo*"
-                :rules="[notEmpty]"
-              />
-            </div>
-            <div class="col-12">
-              <q-input
-                v-model="formData.borrowingDeadline"
-                type="date"
-                label="Fecha de entrega"
-              />
-            </div>
-            <div class="col-12">
-              <q-input
-                v-model="formData.comments"
-                type="textarea"
-                no-resize
-                :rows="3"
-                auto-grow
-                label="Comentarios"
-              />
-            </div>
-            <div class="col-12">
-              <q-select
-                v-model="formData.idEmployee"
-                label="Empleado*"
-                :options="employeesCatalog"
-                option-value="idEmployee"
-                option-label="fullName"
-                :rules="[notEmpty]"
-                emit-value
-                map-options
-              />
-            </div>
-            <div class="col-12">
-              <q-select
-                v-model="formData.idItem"
-                label="Item*"
-                :options="itemsCatalog"
-                option-value="idItem"
-                option-label="name"
-                @update:model-value="onItemSelected"
-                emit-value
-                map-options
-                :rules="[notEmpty]"
-              />
-            </div>
-            <div class="col-12">
-              <q-select
-                v-model="formData.idSingleItem"
-                label="Pieza*"
-                :options="singleItemsCatalog"
-                :rules="[notEmpty]"
-              />
-            </div>
-            <div class="col-12">
-              <q-btn type="submit" color="green" class="q-mt-md" size="md"
-                >Registrar</q-btn
-              >
-            </div>
+  <q-card style="max-width: 500px; width: 100%" class="q-pa-md">
+    <q-card-section>
+      <q-form @submit.prevent="onClickRegister">
+        <div class="row q-gutter-sm">
+          <div class="col-12">
+            <span
+              class="block text-subtitle2"
+              style="font-size: 16px !important; color: #222 !important"
+              >Registrar préstamo</span
+            >
           </div>
-        </q-form>
-      </q-card-section>
-    </q-card>
-  </q-page>
+          <div class="col-12">
+            <q-input
+              v-model="formData.borrowingDate"
+              type="date"
+              label="Fecha del préstamo*"
+              :rules="[notEmpty]"
+            />
+          </div>
+          <div class="col-12">
+            <q-input
+              v-model="formData.borrowingDeadline"
+              type="date"
+              label="Fecha de entrega"
+            />
+          </div>
+          <div class="col-12">
+            <q-input
+              v-model="formData.comments"
+              type="textarea"
+              no-resize
+              :rows="3"
+              auto-grow
+              label="Comentarios"
+            />
+          </div>
+          <div class="col-12">
+            <q-select
+              v-model="formData.idEmployee"
+              label="Empleado*"
+              :options="employeesCatalog"
+              option-value="idEmployee"
+              option-label="fullName"
+              :rules="[notEmpty]"
+              emit-value
+              map-options
+            />
+          </div>
+          <div class="col-12">
+            <q-select
+              v-model="formData.idItem"
+              label="Item*"
+              :options="itemsCatalog"
+              option-value="idItem"
+              option-label="name"
+              @update:model-value="onItemSelected"
+              emit-value
+              map-options
+              :rules="[notEmpty]"
+            />
+          </div>
+          <div class="col-12">
+            <q-select
+              v-model="formData.idSingleItem"
+              label="Pieza*"
+              :options="singleItemsCatalog"
+              :rules="[notEmpty]"
+            />
+          </div>
+          <div class="col-12">
+            <q-btn type="submit" color="green" class="q-mt-md" size="md">Registrar</q-btn>
+          </div>
+        </div>
+      </q-form>
+    </q-card-section>
+  </q-card>
 </template>
 
 <style scoped>
