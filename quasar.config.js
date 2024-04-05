@@ -74,8 +74,8 @@ module.exports = configure(function (ctx) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},
-      // viteVuePluginOptions: {},
+      // extendViteConf (viteConf) { viteConf.build = },
+      viteVuePluginOptions: { script: { defineModel: true } },
 
       vitePlugins: [
         [

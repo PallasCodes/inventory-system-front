@@ -24,7 +24,7 @@ interface RegisterCategoryForm {
   comments?: string | null
   idEmployee: string | any | null
   idItem: string | null
-  idSingleItem: string | null
+  sku: string | null
 }
 
 const formData = ref<RegisterCategoryForm>({
@@ -33,7 +33,7 @@ const formData = ref<RegisterCategoryForm>({
   comments: null,
   idEmployee: null,
   idItem: null,
-  idSingleItem: null,
+  sku: null,
 })
 
 const employeesCatalog = ref<Employee[]>()
@@ -136,8 +136,8 @@ async function onClickRegister() {
               v-model="formData.idEmployee"
               label="Empleado*"
               :options="employeesCatalog"
-              option-value="idEmployee"
-              option-label="fullName"
+              option-value="id_employee"
+              option-label="full_name"
               :rules="[notEmpty]"
               emit-value
               map-options
@@ -158,7 +158,7 @@ async function onClickRegister() {
           </div>
           <div class="col-12">
             <q-select
-              v-model="formData.idSingleItem"
+              v-model="formData.sku"
               label="Pieza*"
               :options="singleItemsCatalog"
               :rules="[notEmpty]"
