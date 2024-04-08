@@ -92,6 +92,12 @@ async function getItems() {
 
   setTimeout(selectFirstRow, 500)
 }
+
+function onDeleteSI(sku: string) {
+  singleItems.value = singleItems.value.filter(
+    (singleItem: SingleItemTable) => singleItem.sku !== sku,
+  )
+}
 </script>
 
 <template>
@@ -107,5 +113,6 @@ async function getItems() {
     :single-items="singleItems"
     :is-loading="isTableDataLoading"
     :item-name="selectedItemName"
+    @delete="onDeleteSI"
   />
 </template>

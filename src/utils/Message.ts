@@ -62,6 +62,7 @@ export class Message {
         textColor: 'white',
         icon: this.icon,
         message: this.message,
+        closeBtn: true,
       })
     }
   }

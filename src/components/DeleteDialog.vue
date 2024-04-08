@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineModel, defineProps, defineEmits } from 'vue'
 
-const emit = defineEmits(['onDelete'])
+const emit = defineEmits(['delete'])
 
 const isDialogActive = defineModel<boolean>({ default: false, type: Boolean })
 
@@ -27,7 +27,7 @@ const props = defineProps<Props>()
           label="Eliminar"
           color="negative"
           v-close-popup
-          @click="emit('onDelete')"
+          @click="emit('delete')"
         />
       </q-card-actions>
     </q-card>

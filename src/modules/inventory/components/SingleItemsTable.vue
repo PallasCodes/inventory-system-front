@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { QTable, QTableProps } from 'quasar'
+import { Loading, QTable, QTableProps } from 'quasar'
 import BorrowingHistoryDialog from '../components/BorrowingsHistoryDialog.vue'
 import { ref } from 'vue'
+
+import TableAction from 'src/components/TableAction.vue'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
+import { handleRequest } from 'src/utils/handleRequest'
+import { SingleItemService } from 'src/api/single-item.api'
 
 export interface SingleItemTable {
   sku: string
@@ -17,7 +22,17 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits(['delete'])
+
 const columns: QTableProps['columns'] = [
+  {
+    name: 'actions',
+    label: 'Acciones',
+    required: true,
+    align: 'left',
+    sortable: false,
+    field: 'actions',
+  },
   {
     name: 'sku',
     label: 'SKU',
@@ -48,14 +63,37 @@ const columns: QTableProps['columns'] = [
 const isDialogActive = ref<boolean>(false)
 
 const dialog = ref()
+const dialogDeleteSI = ref<boolean>()
 
 const sku = ref<string>('')
 const showGrid = ref<boolean>(true)
+
+const selectedSI = ref<SingleItemTable>()
 
 function onRowClick(e: any, row: SingleItemTable) {
   sku.value = row.sku
   isDialogActive.value = true
   dialog.value.getData(row.sku)
+}
+
+function onClickDeleteSI(row: SingleItemTable) {
+  selectedSI.value = row
+  dialogDeleteSI.value = true
+}
+
+async function onDeleteSI() {
+  Loading.show()
+
+  const { message, error } = await handleRequest(
+    SingleItemService.delete,
+    selectedSI.value?.sku,
+  )
+  if (!error) {
+    emit('delete', selectedSI.value?.sku)
+  }
+
+  Loading.hide()
+  message?.display()
 }
 
 const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
@@ -116,6 +154,8 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
           </q-btn-group>
         </template>
 
+        <!-- SINGLE ITEM CARD -->
+
         <template #item="props">
           <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
             <q-card
@@ -125,8 +165,28 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
               @click="onRowClick(null, props.row)"
               class="card"
             >
+              <div class="flex items-center justify-between q-pl-md q-pt-sm">
+                <div>
+                  <span class="block text-subtitle2">{{ props.row.sku }}</span>
+                </div>
+                <div>
+                  <q-btn color="grey-7" round flat icon="more_vert" @click.stop>
+                    <q-menu cover auto-close>
+                      <q-list>
+                        <q-item clickable>
+                          <q-item-section @click.stop="onClickDeleteSI(props.row)"
+                            >Eliminar</q-item-section
+                          >
+                        </q-item>
+                        <q-item clickable>
+                          <q-item-section>Editar</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
+              </div>
               <q-card-section>
-                <span class="block text-subtitle2">{{ props.row.sku }}</span>
                 <q-chip
                   size="12px"
                   outline
@@ -144,6 +204,25 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
               </q-card-section>
             </q-card>
           </div>
+        </template>
+
+        <!-- CUSTOM TABLE CELLS -->
+
+        <template #body-cell-actions="{ row }">
+          <q-td>
+            <TableAction
+              icon="delete"
+              icon-color="negative"
+              label="Eliminar item"
+              @click.stop="onClickDeleteSI(row)"
+            />
+            <TableAction
+              icon="edit"
+              icon-color="primary"
+              label="Editar item"
+              @click.stop="onClickDeleteSI(row)"
+            />
+          </q-td>
         </template>
 
         <template #body-cell-status="{ row }">
@@ -168,6 +247,12 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
       :sku="sku"
     />
   </div>
+
+  <DeleteDialog
+    v-model="dialogDeleteSI"
+    :title="`¿Desea eliminar el item: ${selectedSI?.sku}?`"
+    @delete="onDeleteSI"
+  />
 </template>
 
 <style>
