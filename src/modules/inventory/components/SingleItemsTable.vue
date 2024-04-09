@@ -186,7 +186,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
                   </q-btn>
                 </div>
               </div>
-              <q-card-section>
+              <q-card-section class="q-mt-none q-pt-none">
                 <q-chip
                   size="12px"
                   outline

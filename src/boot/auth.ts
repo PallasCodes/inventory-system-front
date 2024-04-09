@@ -5,7 +5,11 @@ import { api } from 'src/api'
 import { useAuthStore } from 'src/stores/auth-store'
 
 export default boot(async () => {
+  const authStore = useAuthStore()
+
   const token = LocalStorage.getItem('token')
+  const expirationDate = LocalStorage.getItem('expirationDate') as number
+
   if (!token) return
 
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -20,6 +24,12 @@ export default boot(async () => {
 
     const { setToken } = useAuthStore()
     setToken(token as string)
+
+    setTimeout(() => {
+      LocalStorage.remove('token')
+      LocalStorage.remove('expirationDate')
+      authStore.setToken('')
+    }, expirationDate - Date.now())
   } catch (error) {
     Loading.hide()
     console.log(error)

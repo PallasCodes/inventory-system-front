@@ -5,6 +5,8 @@ import { useAuthStore } from 'src/stores/auth-store'
 import { handleRequest } from 'src/utils/handleRequest'
 
 export const useLoginUser = async (email: string, password: string): Promise<boolean> => {
+  const authStore = useAuthStore()
+
   try {
     Loading.show()
 
@@ -28,6 +30,19 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
     setToken(data.token)
 
     LocalStorage.set('token', data.token)
+
+    const delay = 120000
+    const now = Date.now()
+    const expirationDate = now + data.expiresIn - delay
+
+    LocalStorage.set('expirationDate', expirationDate)
+
+    setTimeout(() => {
+      LocalStorage.remove('token')
+      LocalStorage.remove('expirationDate')
+      authStore.setToken('')
+    }, data.expiresIn - delay)
+    // TODO: add env var
 
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
 
