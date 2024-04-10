@@ -7,7 +7,7 @@ import { Category } from '../interfaces/Category'
 import SingleItemStore, { SingleItem } from '../stores/single-item-store'
 import { CategoryService } from 'src/api/category.api'
 import { ItemService } from 'src/api/item.api'
-import { SingleItemStatusCatalog } from '../interfaces/SingleItemStatus.catalog'
+import { SingleItemStatusRegisterCat } from '../interfaces/SingleItemStatus.catalog'
 import { notEmpty, notEmptyNumber } from 'src/utils/formValidations'
 import { handleRequest } from 'src/utils/handleRequest'
 
@@ -48,10 +48,10 @@ const formData = ref<FormData>({
 const form1 = ref<QForm>()
 
 async function onClickNext() {
-  Loading.show()
-
   const validForm = await form1.value?.validate()
   if (!validForm) return
+
+  Loading.show()
 
   let auxSkuPrefix = formData.value.name
     ?.replace(/\s+/g, '')
@@ -189,14 +189,16 @@ const stepper = ref<QStepper>()
       <q-step :name="2" :done="step > 2" title="Registrar Items">
         <single-items-list
           :single-items-amount="formData.amount"
-          :single-item-status-catalog="SingleItemStatusCatalog"
+          :single-item-status-catalog="SingleItemStatusRegisterCat"
           :sku-prefix="skuPrefix"
         />
       </q-step>
       <template v-slot:navigation>
         <q-stepper-navigation>
-          <q-btn v-if="step < 2" color="primary" @click="onClickNext">Siguiente</q-btn>
-          <q-btn v-if="step > 1" color="primary" @click="stepper?.previous()"
+          <q-btn v-if="step < 2" color="primary" @click.stop="onClickNext"
+            >Siguiente</q-btn
+          >
+          <q-btn v-if="step > 1" color="primary" @click.stop="stepper?.previous()"
             >Anterior</q-btn
           >
           <q-btn
@@ -204,7 +206,7 @@ const stepper = ref<QStepper>()
             color="green"
             type="submit"
             class="q-ml-sm"
-            @click="onSubmit"
+            @click.stop="onSubmit"
             >Registrar</q-btn
           >
         </q-stepper-navigation>

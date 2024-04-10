@@ -86,11 +86,18 @@ async function getItemsCount() {
 }
 
 async function getItems() {
-  const { data } = await handleRequest(ItemService.findAll)
-  isTableDataLoading.value = false
-  items.value = data as ItemTable[]
+  const { data, error, message } = await handleRequest(ItemService.findAll)
 
-  setTimeout(selectFirstRow, 500)
+  isTableDataLoading.value = false
+
+  if (error) {
+    message?.display()
+    items.value = []
+  } else {
+    items.value = data as ItemTable[]
+
+    setTimeout(selectFirstRow, 500)
+  }
 }
 
 function onDeleteSI(sku: string) {

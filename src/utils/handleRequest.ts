@@ -58,7 +58,7 @@ export async function handleRequest(
       data: null,
       error: true,
       message: handleRequestError(error),
-      status: 400,
+      status: responseObj.status || 'unknow',
       statusText: 'Error',
     }
   }
