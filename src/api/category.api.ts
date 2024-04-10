@@ -5,15 +5,18 @@ const BASE_URL = '/item/category'
 
 export const CategoryService = {
   findAll() {
-    return api.get(`${BASE_URL}`)
+    return api.get(BASE_URL)
   },
-  create(body: Category) {
-    return api.post(`${BASE_URL}`, body)
+  create(payload: Category) {
+    return api.post(BASE_URL, payload)
   },
   findOneById(id: string) {
     return api.get(`${BASE_URL}/${id}`)
   },
   delete(id: string) {
     return api.delete(`${BASE_URL}/${id}`)
+  },
+  update(payload: Category) {
+    return api.put(BASE_URL, payload)
   },
 }

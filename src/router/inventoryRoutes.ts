@@ -40,6 +40,15 @@ export default [
     },
   },
   {
+    path: 'update-category/:idCategory',
+    name: 'update-category',
+    component: () => import('../modules/inventory/pages/RegisterCategory.vue'),
+    meta: {
+      pageTitle: 'Editar categoría',
+      updatePage: true,
+    },
+  },
+  {
     path: 'register-item',
     name: 'register-item',
     component: () => import('../modules/inventory/pages/RegisterItem.vue'),

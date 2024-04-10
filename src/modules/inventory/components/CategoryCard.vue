@@ -25,11 +25,9 @@ async function onDeleteCategory() {
   )
 
   Loading.hide()
-
   message?.display()
-  if (!error) {
-    emit('onDelete', props.category.idCategory)
-  }
+
+  if (!error) emit('onDelete', props.category.idCategory)
 }
 </script>
 
@@ -49,7 +47,13 @@ async function onDeleteCategory() {
                 <q-item clickable>
                   <q-item-section @click="dialogDelete = true">Eliminar</q-item-section>
                 </q-item>
-                <q-item clickable>
+                <q-item
+                  clickable
+                  :to="{
+                    name: 'update-category',
+                    params: { idCategory: props.category.idCategory },
+                  }"
+                >
                   <q-item-section>Editar</q-item-section>
                 </q-item>
               </q-list>
