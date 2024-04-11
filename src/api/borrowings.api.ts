@@ -23,4 +23,7 @@ export const BorrowingsService = {
   cancelBorrowing(idBorrowing: string) {
     return api.post(`${BASE_URL}/cancel/${idBorrowing}`)
   },
+  delete(idBorrowing: string) {
+    return api.delete(`${BASE_URL}/${idBorrowing}`)
+  },
 }

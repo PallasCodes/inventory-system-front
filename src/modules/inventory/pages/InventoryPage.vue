@@ -105,6 +105,11 @@ function onDeleteSI(sku: string) {
     (singleItem: SingleItemTable) => singleItem.sku !== sku,
   )
 }
+
+function onDeleteItem(idItem: string) {
+  items.value = items.value.filter((item: ItemTable) => item.idItem !== idItem)
+  selectFirstRow()
+}
 </script>
 
 <template>
@@ -114,6 +119,7 @@ function onDeleteSI(sku: string) {
     :items="items"
     :is-loading="isTableDataLoading"
     @on-row-click="onClickRow"
+    @delete="onDeleteItem"
   />
 
   <SingleItemsTable

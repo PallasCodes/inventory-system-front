@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Loading, QTableProps } from 'quasar'
 import { computed, onMounted, ref } from 'vue'
+import { Loading, QTableProps } from 'quasar'
 
 import { handleRequest } from 'src/utils/handleRequest'
 import { BorrowingsService } from 'src/api/borrowings.api'
@@ -8,6 +8,8 @@ import { formatters } from 'src/utils/formatters'
 import { CategoryService } from 'src/api/category.api'
 
 import BasicConfirmationDialog from 'src/components/BasicConfirmationDialog.vue'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
+import TableAction from 'src/components/TableAction.vue'
 
 interface Employee {
   fullName: string
@@ -252,6 +254,34 @@ async function onConfirm() {
 }
 
 const borrowingToCancel = ref<Borrowing>()
+
+function onClickDeleteBorrowing(borrowing: Borrowing) {
+  selectedBorrowing.value = borrowing
+  dialogDeleteBorrowing.value = true
+}
+
+const dialogDeleteBorrowing = ref<boolean>(false)
+
+async function onDeleteBorrowing() {
+  Loading.show()
+
+  const { message, error } = await handleRequest(
+    BorrowingsService.delete,
+    selectedBorrowing.value?.idBorrowing,
+  )
+
+  if (!error) {
+    tableData.value = tableData.value.filter(
+      (borrowing: Borrowing) =>
+        borrowing.idBorrowing !== selectedBorrowing.value?.idBorrowing,
+    )
+  }
+
+  Loading.hide()
+  message?.display()
+}
+
+const selectedBorrowing = ref<Borrowing>()
 </script>
 
 <template>
@@ -348,6 +378,12 @@ const borrowingToCancel = ref<Borrowing>()
                 Cancelar entrega
               </q-tooltip>
             </q-btn>
+            <TableAction
+              icon="delete"
+              icon-color="negative"
+              label="Eliminar prestamo"
+              @click.stop="onClickDeleteBorrowing(row)"
+            />
           </q-td>
         </template>
         <template #body-cell-returned="{ value }">
@@ -371,6 +407,12 @@ const borrowingToCancel = ref<Borrowing>()
     cancel-btn-label="Cerrar"
     title="¿Desea cancelar la entrega del Item: ?"
     @confirm="onConfirm"
+  />
+
+  <DeleteDialog
+    v-model="dialogDeleteBorrowing"
+    :title="`¿Desea eliminar el préstamo?`"
+    @delete="onDeleteBorrowing"
   />
 </template>
 

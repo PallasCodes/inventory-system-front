@@ -88,9 +88,8 @@ async function onDeleteSI() {
     SingleItemService.delete,
     selectedSI.value?.sku,
   )
-  if (!error) {
-    emit('delete', selectedSI.value?.sku)
-  }
+
+  if (!error) emit('delete', selectedSI.value?.sku)
 
   Loading.hide()
   message?.display()

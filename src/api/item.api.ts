@@ -21,4 +21,7 @@ export const ItemService = {
   generateSkuPrefix(skuPrefix: string) {
     return api.post(`${BASE_URL}/generateSkuPrefix`, { skuPrefix })
   },
+  delete(idItem: string) {
+    return api.delete(`${BASE_URL}/${idItem}`)
+  },
 }

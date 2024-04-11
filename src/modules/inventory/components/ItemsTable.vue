@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { Loading, QTable, QTableProps } from 'quasar'
-import { CategoryService } from 'src/api/category.api'
-import { handleRequest } from 'src/utils/handleRequest'
 import { computed, onMounted, ref } from 'vue'
+import { Loading, QTable, QTableProps } from 'quasar'
+
+import { handleRequest } from 'src/utils/handleRequest'
+import { CategoryService } from 'src/api/category.api'
 import { Category } from '../interfaces/Category'
+import { ItemService } from 'src/api/item.api'
+
 import { CategoryTable } from './CategoryDetailTable.vue'
+import TableAction from 'src/components/TableAction.vue'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
 
 export interface ItemTable {
   idItem: string
@@ -29,6 +34,14 @@ const filteredCategories = ref<string[]>([])
 const props = defineProps<Props>()
 
 const columns: QTableProps['columns'] = [
+  {
+    name: 'actions',
+    label: 'Acciones',
+    required: true,
+    align: 'left',
+    sortable: false,
+    field: 'actions',
+  },
   {
     name: 'name',
     label: 'Modelo',
@@ -88,13 +101,16 @@ const columns: QTableProps['columns'] = [
   },
 ]
 
-const emit = defineEmits<{ (e: 'onRowClick', idItem: string): void }>()
+const emit = defineEmits(['onRowClick', 'delete'])
 
 const onRowClick = (evt: Event, row: ItemTable) => {
   emit('onRowClick', row.idItem)
 }
 
 const categoriesCatalog = ref<Category[]>([])
+
+const selectedItem = ref<ItemTable>()
+const dialogDeleteItem = ref<boolean>(false)
 
 const getItems = computed(() => {
   let items = props.items
@@ -129,6 +145,24 @@ onMounted(async () => {
 
   Loading.hide()
 })
+
+function onClickDeleteItem(row: ItemTable) {
+  selectedItem.value = row
+  dialogDeleteItem.value = true
+}
+
+async function onDeleteItem() {
+  Loading.show()
+
+  const { message, error } = await handleRequest(
+    ItemService.delete,
+    selectedItem.value?.idItem,
+  )
+  if (!error) emit('delete', selectedItem.value?.idItem)
+
+  Loading.hide()
+  message?.display()
+}
 </script>
 
 <template>
@@ -177,7 +211,24 @@ onMounted(async () => {
         :pagination="{ rowsPerPage: 20 }"
         row-key="idItem"
         @row-click="onRowClick"
-      />
+      >
+        <template #body-cell-actions="{ row }">
+          <q-td>
+            <TableAction
+              icon="delete"
+              icon-color="negative"
+              label="Eliminar item"
+              @click.stop="onClickDeleteItem(row)"
+            />
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </div>
+
+  <DeleteDialog
+    v-model="dialogDeleteItem"
+    :title="`¿Desea eliminar el modelo: ${selectedItem?.name}?`"
+    @delete="onDeleteItem"
+  />
 </template>
