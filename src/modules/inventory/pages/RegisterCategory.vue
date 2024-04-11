@@ -93,7 +93,10 @@ const registerCategory = async () => {
 
   delete formData.value.imgFile
 
-  const { error, message } = await handleRequest(CategoryService.create, formData.value)
+  const { error, message } = await handleRequest(
+    CategoryService.create,
+    removeNullUndefined(formData.value),
+  )
 
   Loading.hide()
   message?.display()

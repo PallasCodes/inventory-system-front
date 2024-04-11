@@ -26,12 +26,13 @@ export interface ItemTable {
 interface Props {
   items: ItemTable[]
   isLoading: boolean
+  showFilters?: boolean
 }
 
 const search = ref<string>('')
 const filteredCategories = ref<string[]>([])
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), { showFilters: true })
 
 const columns: QTableProps['columns'] = [
   {
@@ -183,7 +184,7 @@ async function onDeleteItem() {
         </template>
       </q-input>
     </div>
-    <div class="col-auto">
+    <div class="col-auto" v-if="showFilters">
       <q-select
         v-model="filteredCategories"
         :options="categoriesCatalog"

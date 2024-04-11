@@ -95,7 +95,6 @@ async function getItems() {
     items.value = []
   } else {
     items.value = data as ItemTable[]
-
     setTimeout(selectFirstRow, 500)
   }
 }

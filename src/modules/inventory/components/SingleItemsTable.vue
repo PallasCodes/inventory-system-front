@@ -194,7 +194,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
                   class="q-mt-sm"
                   >{{ props.row.singleItemStatus?.name }}</q-chip
                 >
-                <q-img :src="props.row.imgUrl ? props.row.imgUrl : 'noImg.png'" />
+                <q-img :src="props.row.imgUrl ? props.row.imgUrl : '/noImg.png'" />
               </q-card-section>
 
               <q-card-section class="q-pt-none q-mt-none" v-if="props.row.comments">
