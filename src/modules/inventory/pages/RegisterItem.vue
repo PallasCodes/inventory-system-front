@@ -138,7 +138,7 @@ const stepper = ref<QStepper>()
                 label="Nombre*"
                 @update:model-value="SingleItemStore.setItemName"
                 :rules="[notEmpty]"
-                style="max-width: 300px"
+                style="max-width: 420px"
               />
             </div>
             <div class="col-12">
@@ -148,7 +148,7 @@ const stepper = ref<QStepper>()
                 label="Descripción"
                 autogrow
                 :rows="3"
-                style="max-width: 300px"
+                style="max-width: 420px"
               ></q-input>
             </div>
             <div class="col-12">
@@ -161,7 +161,7 @@ const stepper = ref<QStepper>()
                 option-value="id"
                 option-label="name"
                 :rules="[notEmpty]"
-                style="max-width: 300px"
+                style="max-width: 420px"
               ></q-select>
             </div>
             <div class="col-12">
@@ -173,14 +173,14 @@ const stepper = ref<QStepper>()
                 label="Num. de items*"
                 @update:model-value="SingleItemStore.updateStore"
                 :rules="[notEmptyNumber]"
-                style="max-width: 300px"
+                style="max-width: 420px"
               />
             </div>
             <div class="col-12">
               <q-checkbox
                 v-model="formData.registerSIDetails"
                 label="Registrar detalles de cada item"
-                style="max-width: 300px; color: #00000099"
+                style="max-width: 360px; color: #00000099"
               />
             </div>
           </div>

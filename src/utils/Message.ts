@@ -62,7 +62,16 @@ export class Message {
         textColor: 'white',
         icon: this.icon,
         message: this.message,
-        closeBtn: true,
+        actions: [
+          {
+            icon: 'close',
+            color: 'white',
+            round: true,
+            handler: () => {
+              /* ... */
+            },
+          },
+        ],
       })
     }
   }

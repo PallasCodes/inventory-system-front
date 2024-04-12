@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh lpR lFf">
+  <q-layout view="lHh LpR lFf">
     <q-header id="navbar" class="q-pa-sm">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
@@ -31,7 +31,7 @@
       id="left-drawer"
       style="box-shadow: rgba(90, 90, 104, 0.4) 16px 0px 38px 12px !important"
     >
-      <div>
+      <div style="">
         <span class="text-h6 q-pa-lg block">INVENTARIO IM</span>
       </div>
       <q-list id="drawer" class="q-pl-sm">
@@ -164,11 +164,9 @@
     </q-drawer>
 
     <q-page-container id="page-container">
-      <q-scroll-area style="height: calc(100vh - 66px); width: 100%">
-        <q-page class="q-mx-xl q-py-md">
-          <router-view />
-        </q-page>
-      </q-scroll-area>
+      <q-page class="q-mx-xl q-py-md">
+        <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
@@ -209,7 +207,8 @@ function logout() {
 }
 
 #navbar {
-  background: transparent;
+  z-index: 1;
+  background: #fafafa;
   color: #222;
 }
 

@@ -164,6 +164,10 @@ async function onDeleteItem() {
   Loading.hide()
   message?.display()
 }
+
+function onclickUpdateItem(row: ItemTable) {
+  console.log(row)
+}
 </script>
 
 <template>
@@ -220,6 +224,12 @@ async function onDeleteItem() {
               icon-color="negative"
               label="Eliminar item"
               @click.stop="onClickDeleteItem(row)"
+            />
+            <TableAction
+              icon="edit"
+              icon-color="primary"
+              label="Editar item"
+              @click.stop="onclickUpdateItem(row)"
             />
           </q-td>
         </template>
