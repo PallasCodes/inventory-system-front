@@ -61,9 +61,9 @@ const columns: QTableProps['columns'] = [
 ]
 
 const isDialogActive = ref<boolean>(false)
-
 const dialog = ref()
-const dialogDeleteSI = ref<boolean>()
+const dialogDeleteSI = ref<boolean>(false)
+const dialogUpdateSI = ref<boolean>(false)
 
 const sku = ref<string>('')
 const showGrid = ref<boolean>(true)
@@ -79,6 +79,11 @@ function onRowClick(e: any, row: SingleItemTable) {
 function onClickDeleteSI(row: SingleItemTable) {
   selectedSI.value = row
   dialogDeleteSI.value = true
+}
+
+function onClickUpdateSI(row: SingleItemTable) {
+  selectedSI.value = row
+  dialogUpdateSI.value = true
 }
 
 async function onDeleteSI() {
@@ -175,12 +180,10 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
                   <q-btn color="grey-7" round flat icon="more_vert" @click.stop>
                     <q-menu cover auto-close>
                       <q-list>
-                        <q-item clickable>
-                          <q-item-section @click.stop="onClickDeleteSI(props.row)"
-                            >Eliminar</q-item-section
-                          >
+                        <q-item clickable @click.stop="onClickDeleteSI(props.row)">
+                          <q-item-section>Eliminar</q-item-section>
                         </q-item>
-                        <q-item clickable>
+                        <q-item clickable @click.stop="onClickUpdateSI(props.row)">
                           <q-item-section>Editar</q-item-section>
                         </q-item>
                       </q-list>
@@ -252,7 +255,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
 
   <DeleteDialog
     v-model="dialogDeleteSI"
-    :title="`¿Desea eliminar el item: ${selectedSI}?`"
+    :title="`¿Desea eliminar el item: ${selectedSI?.sku}?`"
     @delete="onDeleteSI"
   />
 </template>
