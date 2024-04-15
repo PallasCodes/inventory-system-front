@@ -7,6 +7,10 @@ import { handleRequest } from 'src/utils/handleRequest'
 import { BranchService } from 'src/api/branch.api'
 import { DepartmentService } from 'src/api/department.api'
 
+import TableAction from 'src/components/TableAction.vue'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
+import { useRouter } from 'vue-router'
+
 interface ItemTable {
   id_employee: string
   full_name: string
@@ -16,9 +20,41 @@ interface ItemTable {
   id_department: string
 }
 
+const router = useRouter()
+
 const employees = ref<ItemTable[]>([])
 
+const dialogDeleteEmployee = ref<boolean>(false)
+
+const selectedEmployee = ref<ItemTable>()
+
+async function onDeleteEmployee() {
+  Loading.show()
+
+  const { message, error } = await handleRequest(
+    EmployeeService.delete,
+    selectedEmployee.value?.id_employee,
+  )
+
+  Loading.hide()
+  message?.display()
+
+  if (!error) {
+    employees.value = employees.value.filter(
+      (employee: ItemTable) =>
+        employee.id_employee !== selectedEmployee.value?.id_employee,
+    )
+  }
+}
+
 const columns: QTableProps['columns'] = [
+  {
+    name: 'actions',
+    label: 'Acciones',
+    align: 'left',
+    sortable: false,
+    field: 'actions',
+  },
   {
     name: 'full_name',
     label: 'Nombre completo',
@@ -152,6 +188,15 @@ const getItems = computed(() => {
 
   return items
 })
+
+function onClickDeleteEmployee(row: ItemTable) {
+  selectedEmployee.value = row
+  dialogDeleteEmployee.value = true
+}
+
+function onClickUpdateEmployee(row: ItemTable) {
+  router.replace({ name: 'updateEmployee', params: { idEmployee: row.id_employee } })
+}
 </script>
 
 <template>
@@ -229,9 +274,32 @@ const getItems = computed(() => {
         :pagination="{ rowsPerPage: 20 }"
         row-key="idEmployee"
         @row-click="onRowClick"
-      />
+      >
+        <template #body-cell-actions="{ row }">
+          <q-td>
+            <TableAction
+              icon="delete"
+              icon-color="negative"
+              label="Eliminar empleado"
+              @click.stop="onClickDeleteEmployee(row)"
+            />
+            <TableAction
+              icon="edit"
+              icon-color="primary"
+              label="Editar empleado"
+              @click.stop="onClickUpdateEmployee(row)"
+            />
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </div>
+
+  <DeleteDialog
+    v-model="dialogDeleteEmployee"
+    :title="`¿Desea eliminar al empleado: ${selectedEmployee?.full_name}?`"
+    @delete="onDeleteEmployee"
+  />
 </template>
 
 <style>

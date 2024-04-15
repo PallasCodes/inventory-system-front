@@ -15,4 +15,13 @@ export default [
       pageTitle: 'Registrar empleado',
     },
   },
+  {
+    path: '/update-employee/:idEmployee',
+    name: 'updateEmployee',
+    component: () => import('../modules/employees/pages/RegisterEmployeePage.vue'),
+    meta: {
+      pageTitle: 'Editar empleado',
+      updatePage: true,
+    },
+  },
 ]

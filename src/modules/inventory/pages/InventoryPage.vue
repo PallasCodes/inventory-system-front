@@ -99,10 +99,11 @@ async function getItems() {
   }
 }
 
-function onDeleteSI(sku: string) {
+function onDeleteSI(singleItem: SingleItemTable) {
   singleItems.value = singleItems.value.filter(
-    (singleItem: SingleItemTable) => singleItem.sku !== sku,
+    (singleItem: SingleItemTable) => singleItem.sku !== singleItem.sku,
   )
+  // update item table after delete
 }
 
 function onDeleteItem(idItem: string) {

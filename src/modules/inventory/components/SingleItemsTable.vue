@@ -113,7 +113,10 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
         :grid="showGrid"
         @row-click="onRowClick"
       >
-        <template #top-right>
+        <template #top-left>
+          <span class="q-mr-lg q-table__title">{{
+            `Items del modelo: ${props.itemName}`
+          }}</span>
           <span class="q-mr-sm">Mostrar Items en:</span>
           <q-btn-group flat push>
             <q-btn
@@ -249,7 +252,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
 
   <DeleteDialog
     v-model="dialogDeleteSI"
-    :title="`¿Desea eliminar el item: ${selectedSI?.sku}?`"
+    :title="`¿Desea eliminar el item: ${selectedSI}?`"
     @delete="onDeleteSI"
   />
 </template>

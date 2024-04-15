@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import { CategoryService } from 'src/api/category.api'
 import { ItemService } from 'src/api/item.api'
@@ -11,7 +11,6 @@ import SingleItemsTable, { SingleItemTable } from '../components/SingleItemsTabl
 import { Loading } from 'quasar'
 
 const route = useRoute()
-const router = useRouter()
 const categoryData = ref<CategoryData>()
 
 interface CategoryData {
@@ -23,8 +22,6 @@ interface CategoryData {
   numItems: number
   numSingleItems: number
 }
-
-const categories = ref()
 
 async function getCategory(idCategory: string) {
   const { data, message, error } = await handleRequest(

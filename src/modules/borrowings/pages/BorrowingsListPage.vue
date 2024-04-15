@@ -97,7 +97,7 @@ const columns: QTableProps['columns'] = [
     required: false,
     align: 'left',
     sortable: true,
-    field: (row) => row.employee.fullName,
+    field: (row) => row.employee?.fullName,
   },
   {
     name: 'borrowingDate',
@@ -282,6 +282,7 @@ async function onDeleteBorrowing() {
 }
 
 const selectedBorrowing = ref<Borrowing>()
+// TODO: implement tableaction on delete
 </script>
 
 <template>

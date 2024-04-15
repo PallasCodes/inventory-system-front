@@ -116,8 +116,6 @@ onMounted(() => {
   if (route.meta.updatePage) {
     idCategoryToUpdate.value = route.params.idCategory as string
     getCategoryData()
-  } else {
-    console.log('not update')
   }
 })
 
