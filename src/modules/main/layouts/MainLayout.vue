@@ -177,7 +177,7 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRouteStore } from 'src/stores/routes-store'
 import { useAuthStore } from 'src/stores/auth-store'
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Cookies } from 'quasar'
 import { api } from 'src/api'
 
 const routeStore = useRouteStore()
@@ -194,7 +194,8 @@ function toggleLeftDrawer() {
 function logout() {
   router.replace({ name: 'login' })
 
-  LocalStorage.remove('token')
+  // LocalStorage.remove('token')
+  Cookies.remove('token')
   api.defaults.headers.common['Authorization'] = ''
 
   setToken('')

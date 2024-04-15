@@ -1,4 +1,4 @@
-import { Loading, LocalStorage, Notify } from 'quasar'
+import { Cookies, Loading, LocalStorage, Notify } from 'quasar'
 import { api } from 'src/api'
 import { AuthService } from 'src/api/auth.api'
 import { useAuthStore } from 'src/stores/auth-store'
@@ -29,17 +29,22 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
     const { setToken } = useAuthStore()
     setToken(data.token)
 
-    LocalStorage.set('token', data.token)
+    Cookies.set('user_token', data.token, { httpOnly: true })
+    // LocalStorage.set('token', data.token)
 
     const delay = 120000
     const now = Date.now()
     const expirationDate = now + data.expiresIn - delay
 
-    LocalStorage.set('expirationDate', expirationDate)
+    Cookies.set('expirationDate', expirationDate.toString())
+    // LocalStorage.set('expirationDate', expirationDate)
 
     setTimeout(() => {
-      LocalStorage.remove('token')
-      LocalStorage.remove('expirationDate')
+      Cookies.remove('token')
+      Cookies.remove('expirationDate')
+
+      // LocalStorage.remove('token')
+      // LocalStorage.remove('expirationDate')
       authStore.setToken('')
     }, data.expiresIn - delay)
     // TODO: add env var

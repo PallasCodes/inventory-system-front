@@ -99,9 +99,9 @@ async function getItems() {
   }
 }
 
-function onDeleteSI(singleItem: SingleItemTable) {
+function onDeleteSI(sku: string) {
   singleItems.value = singleItems.value.filter(
-    (singleItem: SingleItemTable) => singleItem.sku !== singleItem.sku,
+    (singleItem: SingleItemTable) => singleItem.sku !== sku,
   )
   // update item table after delete
 }
