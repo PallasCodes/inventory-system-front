@@ -2,7 +2,7 @@
 // TODO: FIGURE OUT A WAY TO DISTINGUISH EACH SINGLE ITEM // INSTEAD OF A SELECTION INPUT
 // IT COULD BE USED A SCROLL CATALOG WITH EACH PUCTURE AND THEIR SKU, A BOTTOM THAT OPENS THE
 // SINGLE ITEM HISTORY ON A NEW TAB COULD BE ADDED ASWELL
-import { Loading } from 'quasar'
+import { Loading, useQuasar } from 'quasar'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -15,6 +15,8 @@ import { formatters } from 'src/utils/formatters'
 import { handleRequest } from 'src/utils/handleRequest'
 import { notEmpty } from 'src/utils/formValidations'
 import { BorrowingsService } from 'src/api/borrowings.api'
+
+const $q = useQuasar()
 
 const router = useRouter()
 
@@ -79,6 +81,21 @@ onMounted(() => {
 })
 
 async function onClickRegister() {
+  if (formData.value.borrowingDeadline) {
+    const borrowingDeadline = new Date(
+      formData.value.borrowingDeadline as string,
+    ).getTime()
+    const borrowingDate = new Date(formData.value.borrowingDate as string).getTime()
+
+    if (borrowingDate > borrowingDeadline) {
+      $q.notify({
+        color: 'negative',
+        message: 'La fecha de entrega debe ser mayor o igual a la fecha del prestamo',
+      })
+      return
+    }
+  }
+
   Loading.show()
 
   const { idItem, ...payload } = formData.value
@@ -103,14 +120,14 @@ async function onClickRegister() {
             <span
               class="block text-subtitle2"
               style="font-size: 16px !important; color: #222 !important"
-              >Registrar préstamo</span
+              >Registrar prestamo</span
             >
           </div>
           <div class="col-12">
             <q-input
               v-model="formData.borrowingDate"
               type="date"
-              label="Fecha del préstamo*"
+              label="Fecha del prestamo*"
               :rules="[notEmpty]"
             />
           </div>
@@ -118,7 +135,7 @@ async function onClickRegister() {
             <q-input
               v-model="formData.borrowingDeadline"
               type="date"
-              label="Fecha de entrega"
+              label="Fecha de entrega acordada"
             />
           </div>
           <div class="col-12">

@@ -85,6 +85,6 @@ async function onDeleteCategory() {
   <DeleteDialog
     title="¿Desea eliminar la categoría?"
     v-model="dialogDelete"
-    @on-delete="onDeleteCategory"
+    @delete="onDeleteCategory"
   />
 </template>

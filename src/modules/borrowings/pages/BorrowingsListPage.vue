@@ -290,7 +290,6 @@ async function onDeleteBorrowing() {
 }
 
 const selectedBorrowing = ref<Borrowing>()
-// TODO: implement tableaction on delete
 </script>
 
 <template>
@@ -369,29 +368,18 @@ const selectedBorrowing = ref<Borrowing>()
       >
         <template #body-cell-actions="{ row }">
           <q-td>
-            <q-btn
-              v-if="row.returned"
-              flat
-              round
-              size="sm"
-              @click="onClickCancelReturn(row)"
-            >
-              <q-icon name="cancel" color="negative" />
-              <q-tooltip
-                anchor="top middle"
-                self="bottom middle"
-                :offset="[5, 5]"
-                top
-                style="font-size: 12px"
-              >
-                Cancelar entrega
-              </q-tooltip>
-            </q-btn>
             <TableAction
               icon="delete"
               icon-color="negative"
               label="Eliminar prestamo"
               @click.stop="onClickDeleteBorrowing(row)"
+            />
+            <TableAction
+              v-if="row.returned"
+              icon="cancel"
+              icon-color="negative"
+              label="Cancelar entrega"
+              @click.stop="onClickCancelReturn(row)"
             />
           </q-td>
         </template>
