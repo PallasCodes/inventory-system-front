@@ -51,7 +51,7 @@ const items = ref<ItemTable[]>([])
 const singleItems = ref<SingleItemTable[]>([])
 
 const isTableDataLoading = ref<boolean>(true)
-const selectedItemName = ref<string>('')
+const selectedItem = ref<ItemTable>()
 
 function selectFirstRow() {
   const rows = document.querySelectorAll('.q-table .cursor-pointer')
@@ -67,8 +67,7 @@ onMounted(async () => {
 })
 
 async function onClickRow(idItem: string) {
-  selectedItemName.value = items.value.find((item) => item.idItem === idItem)
-    ?.name as string
+  selectedItem.value = items.value.find((item) => item.idItem === idItem)
   const { data } = await handleRequest(ItemService.findOneById, idItem)
   singleItems.value = data.singleItems as SingleItemTable[]
 }
@@ -99,10 +98,26 @@ async function getItems() {
   }
 }
 
-function onDeleteSI(sku: string) {
+function onDeleteSI(payload: { singleItem: SingleItemTable; item: ItemTable }) {
   singleItems.value = singleItems.value.filter(
-    (singleItem: SingleItemTable) => singleItem.sku !== sku,
+    (singleItem: SingleItemTable) => singleItem.sku !== payload.singleItem.sku,
   )
+  const i = items.value.findIndex((i: ItemTable) => i.idItem === payload.item.idItem)
+
+  items.value[i].numTotalItems -= 1
+
+  if (payload.singleItem.singleItemStatus.idSingleItemStatus === 1) {
+    items.value[i].numAvailableItems -= 1
+  }
+  if (payload.singleItem.singleItemStatus.idSingleItemStatus === 2) {
+    items.value[i].numUnavailableItems -= 1
+  }
+  if (payload.singleItem.singleItemStatus.idSingleItemStatus === 3) {
+    items.value[i].numBorrowedItems -= 1
+  }
+  if (payload.singleItem.singleItemStatus.idSingleItemStatus === 4) {
+    items.value[i].numFixingItems -= 1
+  }
   // update item table after delete
 }
 
@@ -125,7 +140,7 @@ function onDeleteItem(idItem: string) {
   <SingleItemsTable
     :single-items="singleItems"
     :is-loading="isTableDataLoading"
-    :item-name="selectedItemName"
+    :item="selectedItem"
     @delete="onDeleteSI"
   />
 </template>

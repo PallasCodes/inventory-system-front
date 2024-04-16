@@ -72,12 +72,20 @@ const columns: QTableProps['columns'] = [
     field: 'actions',
   },
   {
-    name: 'singleItem',
+    name: 'item',
     label: 'Modelo',
     required: false,
     align: 'left',
     sortable: true,
     field: (row) => row.singleItem?.item?.name,
+  },
+  {
+    name: 'singleItem',
+    label: 'Item',
+    required: false,
+    align: 'left',
+    sortable: true,
+    field: (row) => row.singleItem?.sku,
   },
   {
     name: 'categories',

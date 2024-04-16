@@ -10,9 +10,8 @@ export default boot(async () => {
   // const token = LocalStorage.getItem('token')
   // const expirationDate = LocalStorage.getItem('expirationDate') as number
 
-  const token = Cookies.get('token')
+  const token = Cookies.get('user_token')
   const expirationDate = parseInt(Cookies.get('expirationDate'), 10)
-
   if (!token) return
 
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -31,7 +30,7 @@ export default boot(async () => {
     setTimeout(() => {
       // LocalStorage.remove('token')
       // LocalStorage.remove('expirationDate')
-      Cookies.remove('token')
+      Cookies.remove('user_token')
       Cookies.remove('expirationDate')
 
       authStore.setToken('')

@@ -18,6 +18,7 @@ export interface ItemTable {
   numAvailableItems: number
   numUnavailableItems: number
   numBorrowedItems: number
+  numFixingItems: number
   idCategory: string
   categoryName: string
   categories: any[]

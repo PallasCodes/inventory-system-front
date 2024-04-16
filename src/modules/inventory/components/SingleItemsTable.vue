@@ -11,13 +11,22 @@ import { SingleItemService } from 'src/api/single-item.api'
 export interface SingleItemTable {
   sku: string
   comments?: string
-  status: string
+  imgUrl?: string
+  createdAt: string
+  updatedAt: string
+  isDeleted: boolean
+  singleItemStatus: SingleItemStatus
+}
+
+export interface SingleItemStatus {
+  idSingleItemStatus: number
+  name: string
 }
 
 interface Props {
   singleItems: SingleItemTable[]
   isLoading: boolean
-  itemName: string
+  item: any
 }
 
 const props = defineProps<Props>()
@@ -94,7 +103,9 @@ async function onDeleteSI() {
     selectedSI.value?.sku,
   )
 
-  if (!error) emit('delete', selectedSI.value?.sku)
+  if (!error) {
+    emit('delete', { singleItem: selectedSI.value, item: props.item })
+  }
 
   Loading.hide()
   message?.display()
@@ -107,7 +118,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
   <div class="row q-mt-lg">
     <div :class="showGrid ? 'col-12' : 'col-auto'">
       <q-table
-        :title="`Items del modelo: ${itemName}`"
+        :title="`Items del modelo: ${props.item?.name}`"
         row-key="idSingleItem"
         :rows="props.singleItems || []"
         :columns="columns"
@@ -120,7 +131,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
       >
         <template #top-left>
           <span class="q-mr-lg q-table__title">{{
-            `Items del modelo: ${props.itemName}`
+            `Items del modelo: ${props.item?.name}`
           }}</span>
           <span class="q-mr-sm">Mostrar Items en:</span>
           <q-btn-group flat push>
@@ -162,7 +173,6 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
         </template>
 
         <!-- SINGLE ITEM CARD -->
-
         <template #item="props">
           <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
             <q-card
@@ -212,7 +222,6 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
         </template>
 
         <!-- CUSTOM TABLE CELLS -->
-
         <template #body-cell-actions="{ row }">
           <q-td>
             <TableAction
@@ -248,7 +257,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
     <BorrowingHistoryDialog
       v-model="isDialogActive"
       ref="dialog"
-      :item-model="props.itemName"
+      :item-model="props.item?.name || ''"
       :sku="sku"
     />
   </div>

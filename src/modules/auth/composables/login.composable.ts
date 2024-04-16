@@ -29,7 +29,7 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
     const { setToken } = useAuthStore()
     setToken(data.token)
 
-    Cookies.set('user_token', data.token, { httpOnly: true })
+    Cookies.set('user_token', data.token)
     // LocalStorage.set('token', data.token)
 
     const delay = 120000
@@ -40,7 +40,7 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
     // LocalStorage.set('expirationDate', expirationDate)
 
     setTimeout(() => {
-      Cookies.remove('token')
+      Cookies.remove('user_token')
       Cookies.remove('expirationDate')
 
       // LocalStorage.remove('token')
