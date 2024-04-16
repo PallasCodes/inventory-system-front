@@ -12,6 +12,7 @@ export default boot(async () => {
 
   const token = Cookies.get('user_token')
   const expirationDate = parseInt(Cookies.get('expirationDate'), 10)
+
   if (!token) return
 
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`

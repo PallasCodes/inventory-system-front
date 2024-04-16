@@ -118,7 +118,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
   <div class="row q-mt-lg">
     <div :class="showGrid ? 'col-12' : 'col-auto'">
       <q-table
-        :title="`Items del modelo: ${props.item?.name}`"
+        :title="`Items del modelo: ${props.item?.name || ''}`"
         row-key="idSingleItem"
         :rows="props.singleItems || []"
         :columns="columns"
@@ -131,7 +131,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
       >
         <template #top-left>
           <span class="q-mr-lg q-table__title">{{
-            `Items del modelo: ${props.item?.name}`
+            `Items del modelo: ${props.item?.name || ''}`
           }}</span>
           <span class="q-mr-sm">Mostrar Items en:</span>
           <q-btn-group flat push>
