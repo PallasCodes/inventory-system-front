@@ -81,10 +81,10 @@ const columns: QTableProps['columns'] = [
     sortable: true,
   },
   {
-    name: 'numItems',
+    name: 'num_borrowings',
     label: 'No. de prestamos actuales',
     align: 'left',
-    field: 'numItems',
+    field: 'num_borrowings',
     required: false,
     sortable: true,
   },
