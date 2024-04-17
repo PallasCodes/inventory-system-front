@@ -29,6 +29,7 @@ const formData = ref<RegisterCategoryForm>({
   imgUrl: null,
 })
 
+// TODO: make a reusable fn and use env vars
 async function getImgUrl(): Promise<string> {
   const formPayload = new FormData()
 
@@ -65,7 +66,7 @@ async function updateCategory() {
 
     if (imgUrl === 'error') {
       $q.dialog({
-        title: 'Ocurrió un error al registrar la categoría. Inténtalo más tarde',
+        title: 'Ocurrió un error al actualizar la categoría. Inténtalo más tarde',
         color: 'negative',
       })
 

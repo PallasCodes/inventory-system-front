@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { Loading, QTable, QTableProps } from 'quasar'
-import BorrowingHistoryDialog from '../components/BorrowingsHistoryDialog.vue'
 import { ref } from 'vue'
+import { Loading, QTable, QTableProps } from 'quasar'
 
-import TableAction from 'src/components/TableAction.vue'
-import DeleteDialog from 'src/components/DeleteDialog.vue'
 import { handleRequest } from 'src/utils/handleRequest'
 import { SingleItemService } from 'src/api/single-item.api'
+
+import BorrowingHistoryDialog from '../components/BorrowingsHistoryDialog.vue'
+import TableAction from 'src/components/TableAction.vue'
+import DeleteDialog from 'src/components/DeleteDialog.vue'
+import DialogUpdateSingleItem from './DialogUpdateSingleItem.vue'
 
 export interface SingleItemTable {
   sku: string
@@ -29,9 +31,11 @@ interface Props {
   item: any
 }
 
+// TODO: check if it should be used a v model instead of props for table data
+
 const props = defineProps<Props>()
 
-const emit = defineEmits(['delete'])
+const emit = defineEmits(['delete', 'update'])
 
 const columns: QTableProps['columns'] = [
   {
@@ -109,6 +113,10 @@ async function onDeleteSI() {
 
   Loading.hide()
   message?.display()
+}
+
+function onUpdateSI(singleItem: SingleItemTable) {
+  emit('update', singleItem)
 }
 
 const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
@@ -190,10 +198,10 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
                   <q-btn color="grey-7" round flat icon="more_vert" @click.stop>
                     <q-menu cover auto-close>
                       <q-list>
-                        <q-item clickable @click.stop="onClickDeleteSI(props.row)">
+                        <q-item clickable @click="onClickDeleteSI(props.row)">
                           <q-item-section>Eliminar</q-item-section>
                         </q-item>
-                        <q-item clickable @click.stop="onClickUpdateSI(props.row)">
+                        <q-item clickable @click="onClickUpdateSI(props.row)">
                           <q-item-section>Editar</q-item-section>
                         </q-item>
                       </q-list>
@@ -266,6 +274,13 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
     v-model="dialogDeleteSI"
     :title="`¿Desea eliminar el item: ${selectedSI?.sku}?`"
     @delete="onDeleteSI"
+  />
+
+  <DialogUpdateSingleItem
+    v-model="dialogUpdateSI"
+    :item="props.item"
+    :single-item="selectedSI"
+    @update="onUpdateSI"
   />
 </template>
 

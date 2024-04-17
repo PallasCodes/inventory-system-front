@@ -83,6 +83,13 @@ function selectFirstRow() {
   const rows = document.querySelectorAll('.q-table .cursor-pointer')
   if (rows.length >= 1) (rows[0] as HTMLTableRowElement).click()
 }
+
+function onUpdateSI(singleItem: SingleItemTable) {
+  const i = singleItemsAux.value.findIndex(
+    (si: SingleItemTable) => si.sku === singleItem.sku,
+  )
+  singleItemsAux.value[i] = { ...singleItem }
+}
 </script>
 
 <template>
@@ -98,5 +105,6 @@ function selectFirstRow() {
     :is-loading="isSITableDataLoading"
     :item="selectedItem"
     @delete="onDeleteSI"
+    @update="onUpdateSI"
   />
 </template>
