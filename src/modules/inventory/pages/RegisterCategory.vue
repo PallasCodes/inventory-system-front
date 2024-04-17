@@ -60,6 +60,25 @@ function onSubmit() {
 async function updateCategory() {
   Loading.show()
 
+  if (formData.value.imgFile) {
+    const imgUrl = await getImgUrl()
+
+    if (imgUrl === 'error') {
+      $q.dialog({
+        title: 'Ocurrió un error al registrar la categoría. Inténtalo más tarde',
+        color: 'negative',
+      })
+
+      delete formData.value.imgUrl
+    } else {
+      formData.value.imgUrl = imgUrl
+    }
+  } else {
+    delete formData.value.imgUrl
+  }
+
+  delete formData.value.imgFile
+
   const { message, error } = await handleRequest(
     CategoryService.update,
     removeNullUndefined(formData.value),

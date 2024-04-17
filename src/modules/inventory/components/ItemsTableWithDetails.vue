@@ -14,6 +14,8 @@ interface Props {
 
 const props = defineProps<Props>()
 
+const emit = defineEmits(['deleteItem', 'deleteSingleItem'])
+
 watch(
   () => props.items,
   () => {
@@ -48,6 +50,8 @@ async function onClickRow(idItem: string) {
 }
 
 function onDeleteSI(payload: { singleItem: SingleItemTable; item: ItemTable }) {
+  emit('deleteSingleItem', payload.singleItem.singleItemStatus.idSingleItemStatus)
+
   singleItemsAux.value = singleItemsAux.value?.filter(
     (singleItem: SingleItemTable) => singleItem.sku !== payload.singleItem.sku,
   )
@@ -70,6 +74,7 @@ function onDeleteSI(payload: { singleItem: SingleItemTable; item: ItemTable }) {
 }
 
 function onDeleteItem(idItem: string) {
+  emit('deleteItem')
   itemsAux.value = itemsAux.value.filter((item: ItemTable) => item.idItem !== idItem)
   selectFirstRow()
 }

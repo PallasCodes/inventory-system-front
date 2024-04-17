@@ -82,10 +82,20 @@ async function getItems() {
     items.value = data as ItemTable[]
   }
 }
+
+function onDeleteSingleItem(idSingleItemStatus: number) {
+  itemCards.value[0].amount -= 1
+  itemCards.value[idSingleItemStatus].amount -= 1
+}
 </script>
 
 <template>
   <ItemsInfoCardsList :items-cards="itemCards" class="q-mb-xl" />
 
-  <ItemsTableWithDetails :items="items" :is-table-data-loading="isTableDataLoading" />
+  <ItemsTableWithDetails
+    :items="items"
+    :is-table-data-loading="isTableDataLoading"
+    @delete-item="getItemsCount"
+    @delete-single-item="onDeleteSingleItem"
+  />
 </template>
