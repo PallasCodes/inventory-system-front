@@ -47,6 +47,7 @@ export const useLoginUser = async (email: string, password: string): Promise<boo
       // LocalStorage.remove('expirationDate')
       authStore.setToken('')
     }, data.expiresIn - delay)
+
     // TODO: add env var
 
     api.defaults.headers.common['Authorization'] = `Bearer ${data.token}`
