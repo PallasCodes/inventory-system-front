@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import { Loading, QTableProps } from 'quasar'
 import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { EmployeeService } from 'src/api/employee.api'
 import { handleRequest } from 'src/utils/handleRequest'
 import { BranchService } from 'src/api/branch.api'
 import { DepartmentService } from 'src/api/department.api'
+import { BorrowingsService } from 'src/api/borrowings.api'
 
 import TableAction from 'src/components/TableAction.vue'
 import DeleteDialog from 'src/components/DeleteDialog.vue'
-import { useRouter } from 'vue-router'
+import BorrowingHistoryDialog from 'src/modules/inventory/components/BorrowingsHistoryDialog.vue'
 
 interface ItemTable {
   id_employee: string
@@ -135,8 +137,13 @@ async function getDepartmentsCatalog(idBranch: string) {
   }
 }
 
-function onRowClick(evt: Event, row: ItemTable) {
-  console.log(row)
+async function onRowClick(evt: Event, row: ItemTable) {
+  selectedEmployee.value = row
+  borrowingsHistoryDialog.value = true
+  dialog.value.getData(
+    selectedEmployee.value?.id_employee,
+    BorrowingsService.getEmployeeBorrowingsHistory,
+  )
 }
 
 const search = ref<string>('')
@@ -197,6 +204,9 @@ function onClickDeleteEmployee(row: ItemTable) {
 function onClickUpdateEmployee(row: ItemTable) {
   router.replace({ name: 'updateEmployee', params: { idEmployee: row.id_employee } })
 }
+
+const borrowingsHistoryDialog = ref<boolean>(false)
+const dialog = ref()
 </script>
 
 <template>
@@ -299,6 +309,13 @@ function onClickUpdateEmployee(row: ItemTable) {
     v-model="dialogDeleteEmployee"
     :title="`¿Desea eliminar al empleado: ${selectedEmployee?.full_name}?`"
     @delete="onDeleteEmployee"
+  />
+  <BorrowingHistoryDialog
+    v-model="borrowingsHistoryDialog"
+    ref="dialog"
+    :title="selectedEmployee?.full_name || ''"
+    :id="selectedEmployee?.id_employee"
+    mode="employee"
   />
 </template>
 

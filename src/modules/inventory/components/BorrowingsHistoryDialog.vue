@@ -2,12 +2,11 @@
 import { QTableProps } from 'quasar'
 import { BorrowingsService } from 'src/api/borrowings.api'
 import { formatters } from 'src/utils/formatters'
-import { handleRequest } from 'src/utils/handleRequest'
+import { AxiosCustomResponse, handleRequest } from 'src/utils/handleRequest'
 import { defineModel, ref } from 'vue'
 
 interface Props {
-  itemModel: string
-  sku: string
+  title: string
 }
 
 const props = defineProps<Props>()
@@ -45,7 +44,7 @@ const columns: QTableProps['columns'] = [
     required: true,
     align: 'left',
     sortable: true,
-    field: (row) => row.employee.fullName,
+    field: (row) => row.employee?.fullName,
   },
   {
     name: 'department',
@@ -53,7 +52,7 @@ const columns: QTableProps['columns'] = [
     required: true,
     align: 'left',
     sortable: true,
-    field: (row) => row.employee.department.name,
+    field: (row) => row.employee?.department?.name,
   },
   {
     name: 'branch',
@@ -61,7 +60,7 @@ const columns: QTableProps['columns'] = [
     required: true,
     align: 'left',
     sortable: true,
-    field: (row) => row.employee.department.branch.name,
+    field: (row) => row.employee?.department?.branch?.name,
   },
   {
     name: 'comments',
@@ -76,14 +75,14 @@ const columns: QTableProps['columns'] = [
 const rows = ref()
 const loading = ref(false)
 
-async function getData(sku: string) {
+async function getData(
+  sku: string,
+  fn: (...fnArgs: any) => Promise<AxiosCustomResponse>,
+) {
   rows.value = []
   loading.value = true
 
-  const { data, message, error } = await handleRequest(
-    BorrowingsService.getBorrowingsHistory,
-    sku,
-  )
+  const { data, message, error } = await handleRequest(fn, sku)
 
   if (error) {
     message?.display()
@@ -103,7 +102,7 @@ defineExpose({ getData })
     <q-card class="col-12 q-px-sm">
       <q-card-section>
         <div class="text-h6">
-          {{ `Historial de prestamos - ${props.itemModel} - ${props.sku}` }}
+          {{ `Historial de prestamos - ${props.title}` }}
         </div>
       </q-card-section>
 

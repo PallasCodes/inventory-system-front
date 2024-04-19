@@ -9,6 +9,7 @@ import BorrowingHistoryDialog from '../components/BorrowingsHistoryDialog.vue'
 import TableAction from 'src/components/TableAction.vue'
 import DeleteDialog from 'src/components/DeleteDialog.vue'
 import DialogUpdateSingleItem from './DialogUpdateSingleItem.vue'
+import { BorrowingsService } from 'src/api/borrowings.api'
 
 export interface SingleItemTable {
   sku: string
@@ -86,7 +87,7 @@ const selectedSI = ref<SingleItemTable>()
 function onRowClick(e: any, row: SingleItemTable) {
   sku.value = row.sku
   isDialogActive.value = true
-  dialog.value.getData(row.sku)
+  dialog.value.getData(row.sku, BorrowingsService.getBorrowingsHistory)
 }
 
 function onClickDeleteSI(row: SingleItemTable) {
@@ -268,8 +269,9 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
     <BorrowingHistoryDialog
       v-model="isDialogActive"
       ref="dialog"
-      :item-model="props.item?.name || ''"
-      :sku="sku"
+      :title="`${props.item?.name} - ${sku}`"
+      :id="sku"
+      mode="singleItem"
     />
   </div>
 

@@ -26,4 +26,7 @@ export const BorrowingsService = {
   delete(idBorrowing: string) {
     return api.delete(`${BASE_URL}/${idBorrowing}`)
   },
+  getEmployeeBorrowingsHistory(idEmployee: string) {
+    return api.get(`${BASE_URL}/employee-borrowings-history/${idEmployee}`)
+  },
 }
