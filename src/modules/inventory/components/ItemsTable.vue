@@ -113,7 +113,7 @@ const columns: QTableProps['columns'] = [
   },
 ]
 
-const emit = defineEmits(['onRowClick', 'delete', 'update'])
+const emit = defineEmits(['onRowClick', 'delete', 'update', 'search'])
 
 const onRowClick = (evt: Event, row: ItemTable) => {
   emit('onRowClick', row.idItem)
@@ -142,6 +142,8 @@ const getItems = computed(() => {
       item.name.toLowerCase().includes(search.value.toLocaleLowerCase()),
     )
   }
+
+  emit('search', items)
 
   return items
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 import { ItemService } from 'src/api/item.api'
 import { handleRequest } from 'src/utils/handleRequest'
@@ -30,7 +30,7 @@ watch(
 
 const selectedItem = ref<ItemTable>()
 const isSITableDataLoading = ref<boolean>(true)
-
+const singleItems = ref<SingleItemTable[]>([])
 const singleItemsAux = ref<SingleItemTable[]>([])
 const itemsAux = ref<ItemTable[]>([])
 
@@ -42,17 +42,18 @@ async function onClickRow(idItem: string) {
   isSITableDataLoading.value = false
 
   if (!error) {
+    singleItems.value = data.singleItems as SingleItemTable[]
     singleItemsAux.value = data.singleItems as SingleItemTable[]
   } else {
     message?.display()
-    singleItemsAux.value = []
+    singleItems.value = []
   }
 }
 
 function onDeleteSI(payload: { singleItem: SingleItemTable; item: ItemTable }) {
   emit('deleteSingleItem', payload.singleItem.singleItemStatus.idSingleItemStatus)
 
-  singleItemsAux.value = singleItemsAux.value?.filter(
+  singleItems.value = singleItems.value?.filter(
     (singleItem: SingleItemTable) => singleItem.sku !== payload.singleItem.sku,
   )
   const i = itemsAux.value.findIndex((i: ItemTable) => i.idItem === payload.item.idItem)
@@ -85,10 +86,10 @@ function selectFirstRow() {
 }
 
 function onUpdateSI(singleItem: SingleItemTable) {
-  const i = singleItemsAux.value.findIndex(
+  const i = singleItems.value.findIndex(
     (si: SingleItemTable) => si.sku === singleItem.sku,
   )
-  singleItemsAux.value[i] = { ...singleItem }
+  singleItems.value[i] = { ...singleItem }
 }
 
 function onUpdateItem(item: ItemTable) {
@@ -96,6 +97,16 @@ function onUpdateItem(item: ItemTable) {
     (itemAux: ItemTable) => itemAux.idItem === item.idItem,
   )
   itemsAux.value[i] = { ...item }
+}
+
+function updateSingleItems(items: ItemTable[]) {
+  const item = items.find((i: ItemTable) => i.idItem === selectedItem.value?.idItem)
+
+  if (!item) {
+    singleItemsAux.value = []
+  } else {
+    singleItemsAux.value = singleItems.value
+  }
 }
 </script>
 
@@ -106,6 +117,7 @@ function onUpdateItem(item: ItemTable) {
     @on-row-click="onClickRow"
     @delete="onDeleteItem"
     @update="onUpdateItem"
+    @search="updateSingleItems"
   />
   <SingleItemsTable
     :single-items="singleItemsAux"

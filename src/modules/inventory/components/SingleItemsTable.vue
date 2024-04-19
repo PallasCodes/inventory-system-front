@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Loading, QTable, QTableProps } from 'quasar'
 
 import { handleRequest } from 'src/utils/handleRequest'
@@ -121,13 +121,17 @@ function onUpdateSI(singleItem: SingleItemTable) {
 }
 
 const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
+
+const getTitle = computed(() => {
+  return props.singleItems.length === 0 ? '' : props.item?.names
+})
 </script>
 
 <template>
   <div class="row q-mt-lg">
     <div :class="showGrid ? 'col-12' : 'col-auto'">
       <q-table
-        :title="`Items del modelo: ${props.item?.name || ''}`"
+        :title="`Items del modelo: ${getTitle}`"
         row-key="idSingleItem"
         :rows="props.singleItems || []"
         :columns="columns"
