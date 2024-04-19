@@ -83,7 +83,7 @@ async function onSubmit() {
               option-value="idBorrowing"
               :option-label="
                 (i) =>
-                  `${i.singleItem.sku} - ${i.singleItem.item.name} - ${i.employee.fullName}`
+                  `${i.singleItem?.sku} - ${i.singleItem?.item?.name} - ${i.employee?.fullName}`
               "
               emit-value
               map-options

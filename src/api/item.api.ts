@@ -1,13 +1,14 @@
 import { api } from 'app/src/api'
+import { UpdateItemFormData } from 'src/modules/inventory/components/DialogUpdateItem.vue'
 
 const BASE_URL = '/item'
 
 export const ItemService = {
   findAll() {
-    return api.get(`${BASE_URL}`)
+    return api.get(BASE_URL)
   },
-  create(body: object) {
-    return api.post(BASE_URL, body)
+  create(payload: object) {
+    return api.post(BASE_URL, payload)
   },
   findOneById(idItem: string) {
     return api.get(`${BASE_URL}/${idItem}`)
@@ -23,5 +24,8 @@ export const ItemService = {
   },
   delete(idItem: string) {
     return api.delete(`${BASE_URL}/${idItem}`)
+  },
+  update(payload: UpdateItemFormData) {
+    return api.put(BASE_URL, payload)
   },
 }

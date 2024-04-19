@@ -10,6 +10,7 @@ import { ItemService } from 'src/api/item.api'
 import { CategoryTable } from './CategoryDetailTable.vue'
 import TableAction from 'src/components/TableAction.vue'
 import DeleteDialog from 'src/components/DeleteDialog.vue'
+import DialogUpdateItem from './DialogUpdateItem.vue'
 
 export interface ItemTable {
   idItem: string
@@ -22,6 +23,7 @@ export interface ItemTable {
   idCategory: string
   categoryName: string
   categories: any[]
+  description?: string | null
 }
 
 interface Props {
@@ -101,15 +103,25 @@ const columns: QTableProps['columns'] = [
     sortable: true,
     field: 'numFixingItems',
   },
+  {
+    name: 'description',
+    label: 'Descripción',
+    align: 'left',
+    required: false,
+    sortable: false,
+    field: 'description',
+  },
 ]
 
-const emit = defineEmits(['onRowClick', 'delete'])
+const emit = defineEmits(['onRowClick', 'delete', 'update'])
 
 const onRowClick = (evt: Event, row: ItemTable) => {
   emit('onRowClick', row.idItem)
 }
 
 const categoriesCatalog = ref<Category[]>([])
+
+const dialogUpdateItem = ref<boolean>(false)
 
 const selectedItem = ref<ItemTable>()
 const dialogDeleteItem = ref<boolean>(false)
@@ -166,8 +178,13 @@ async function onDeleteItem() {
   message?.display()
 }
 
-function onclickUpdateItem(row: ItemTable) {
-  console.log(row)
+function onClickUpdateItem(row: ItemTable) {
+  selectedItem.value = row
+  dialogUpdateItem.value = true
+}
+
+function onUpdateItem(row: ItemTable) {
+  emit('update', row)
 }
 </script>
 
@@ -230,7 +247,7 @@ function onclickUpdateItem(row: ItemTable) {
               icon="edit"
               icon-color="primary"
               label="Editar item"
-              @click.stop="onclickUpdateItem(row)"
+              @click.stop="onClickUpdateItem(row)"
             />
           </q-td>
         </template>
@@ -242,5 +259,10 @@ function onclickUpdateItem(row: ItemTable) {
     v-model="dialogDeleteItem"
     :title="`¿Desea eliminar el modelo: ${selectedItem?.name}?`"
     @delete="onDeleteItem"
+  />
+  <DialogUpdateItem
+    v-model="dialogUpdateItem"
+    :item="selectedItem"
+    @update="onUpdateItem"
   />
 </template>

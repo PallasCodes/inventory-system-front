@@ -182,11 +182,14 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
 
         <!-- SINGLE ITEM CARD -->
         <template #item="props">
-          <div class="q-pa-xs col-xs-12 col-sm-6 col-md-4 col-lg-2 grid-style-transition">
+          <div
+            class="q-pa-xs col-xs-12 col-sm-6 col-md-3 col-lg-2 grid-style-transition"
+            style="align-self: stretch"
+          >
             <q-card
               bordered
               flat
-              style="cursor: pointer"
+              style="cursor: pointer; height: 100%"
               @click="onRowClick(null, props.row)"
               class="card"
             >
@@ -242,7 +245,7 @@ const colors: string[] = ['positive', 'negative', 'secondary', 'orange']
               icon="edit"
               icon-color="primary"
               label="Editar item"
-              @click.stop="onClickDeleteSI(row)"
+              @click.stop="onClickUpdateSI(row)"
             />
           </q-td>
         </template>

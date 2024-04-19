@@ -90,6 +90,13 @@ function onUpdateSI(singleItem: SingleItemTable) {
   )
   singleItemsAux.value[i] = { ...singleItem }
 }
+
+function onUpdateItem(item: ItemTable) {
+  const i = itemsAux.value.findIndex(
+    (itemAux: ItemTable) => itemAux.idItem === item.idItem,
+  )
+  itemsAux.value[i] = { ...item }
+}
 </script>
 
 <template>
@@ -98,8 +105,8 @@ function onUpdateSI(singleItem: SingleItemTable) {
     :is-loading="isTableDataLoading"
     @on-row-click="onClickRow"
     @delete="onDeleteItem"
+    @update="onUpdateItem"
   />
-
   <SingleItemsTable
     :single-items="singleItemsAux"
     :is-loading="isSITableDataLoading"
