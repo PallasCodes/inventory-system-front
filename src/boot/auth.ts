@@ -1,4 +1,4 @@
-import { Cookies, Loading, LocalStorage } from 'quasar'
+import { Cookies } from 'quasar'
 import { boot } from 'quasar/wrappers'
 
 import { api } from 'src/api'
@@ -7,37 +7,24 @@ import { useAuthStore } from 'src/stores/auth-store'
 export default boot(async () => {
   const authStore = useAuthStore()
 
-  // const token = LocalStorage.getItem('token')
-  // const expirationDate = LocalStorage.getItem('expirationDate') as number
-
   const token = Cookies.get('user_token')
+  console.log('🚀 ~ boot ~ token:', token)
   const expirationDate = parseInt(Cookies.get('expirationDate'), 10)
+  console.log('🚀 ~ boot ~ expirationDate:', expirationDate)
+  const leftTime = expirationDate - Date.now()
+  console.log('🚀 ~ boot ~ leftTime:', leftTime)
 
-  if (!token) return
+  if (!expirationDate || !token) return
+  if (leftTime <= 0) return
+
+  authStore.setToken(token)
 
   api.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
-  try {
-    Loading.show({
-      message: 'Espere un momento. El sistema está cargando.',
-      spinnerColor: 'primary',
-    })
-    await api.post('/auth/check-status')
-    Loading.hide()
+  setTimeout(() => {
+    Cookies.remove('user_token')
+    Cookies.remove('expirationDate')
 
-    const { setToken } = useAuthStore()
-    setToken(token as string)
-
-    setTimeout(() => {
-      // LocalStorage.remove('token')
-      // LocalStorage.remove('expirationDate')
-      Cookies.remove('user_token')
-      Cookies.remove('expirationDate')
-
-      authStore.setToken('')
-    }, expirationDate - Date.now())
-  } catch (error) {
-    Loading.hide()
-    console.log(error)
-  }
+    authStore.setToken('')
+  }, expirationDate - Date.now())
 })

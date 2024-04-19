@@ -195,7 +195,8 @@ function logout() {
   router.replace({ name: 'login' })
 
   // LocalStorage.remove('token')
-  Cookies.remove('token')
+  Cookies.remove('user_token')
+  Cookies.remove('expirationDate')
   api.defaults.headers.common['Authorization'] = ''
 
   setToken('')
