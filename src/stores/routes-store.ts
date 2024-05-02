@@ -13,7 +13,7 @@ export const useRouteStore = defineStore('store', () => {
 
     // Actions
     setPageTitle(title: string) {
-      document.title = `Inventario IM - ${title}`
+      document.title = `Inventario - ${title}`
       pageTitle.value = title
     },
   }

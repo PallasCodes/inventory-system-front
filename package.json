@@ -2,7 +2,7 @@
   "name": "inventory-system-client",
   "version": "0.0.1",
   "description": "A Quasar Project",
-  "productName": "Inventario IM",
+  "productName": "Inventario",
   "author": "pallascodes <pallascodes@gmail.com>",
   "private": true,
   "scripts": {
