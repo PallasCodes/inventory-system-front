@@ -26,7 +26,7 @@ const login = async () => {
     <q-page-container>
       <div class="row justify-center items-center" style="min-height: 100vh">
         <div class="col-10 col-md-6">
-          <span class="text-center text-h4 q-mb-lg block">Inventario IM</span>
+          <span class="text-center text-h4 q-mb-lg block">Gestor de Inventario</span>
           <q-card style="width: 100%; max-width: 420px" class="q-mx-auto q-pa-sm">
             <q-card-section>
               <span class="text-h6 q-mb-sm">Login</span>

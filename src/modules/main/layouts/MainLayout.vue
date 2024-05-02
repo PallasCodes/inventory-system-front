@@ -32,7 +32,7 @@
       style="box-shadow: rgba(90, 90, 104, 0.4) 16px 0px 38px 12px !important"
     >
       <div style="">
-        <span class="text-h6 q-pa-lg block">INVENTARIO IM</span>
+        <span class="text-h6 q-pa-lg block">INVENTARIO</span>
       </div>
       <q-list id="drawer" class="q-pl-sm">
         <div class="q-px-md q-pb-xs text-grey-5">
