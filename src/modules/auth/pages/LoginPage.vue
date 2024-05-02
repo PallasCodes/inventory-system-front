@@ -6,8 +6,8 @@ import { useLoginUser } from '../composables/login.composable'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
-const email = ref<string>()
-const password = ref<string>()
+const email = ref<string>('bernardo2@gmail.com')
+const password = ref<string>('passwordA123')
 
 const loginForm = ref(null)
 
